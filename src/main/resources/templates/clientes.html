@@ -2,7 +2,7 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Lista de Productos</title>
+    <title>Lista de Clientes</title>
 
     <!-- Bootswatch -->
     <link rel="stylesheet"
@@ -46,12 +46,12 @@
 
                 <li class="nav-item">
                     <a class="nav-link active" href="#">
-                        <i class="bi bi-list-ul"></i> Productos
+                        <i class="bi bi-list-ul"></i> Clientes
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/productos/nuevo">
+                    <a class="nav-link" href="/clientes/nuevo">
                         <i class="bi bi-plus-circle"></i> Nuevo
                     </a>
                 </li>
@@ -61,7 +61,7 @@
                         <i class="bi bi-gear"></i> Mantenimiento
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/clientes">Clientes</a></li>
+                        <li><a class="dropdown-item" href="/productos">Productos</a></li>
                         <li><a class="dropdown-item" href="#">Proveedor</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a  class="dropdown-item"  href="/login">Salir</a></li>
@@ -79,7 +79,7 @@
     <div class="card">
         <div class="card-header bg-primary text-white">
             <h4 class="mb-0">
-                <i class="bi bi-box"></i> Lista de Productos
+                <i class="bi bi-box"></i> Lista de Clientes
             </h4>
         </div>
 
@@ -88,30 +88,32 @@
             <table class="table table-hover align-middle">
                 <thead>
                 <tr>
-                    <th>Descripción</th>
-                    <th>Precio Venta</th>
-                    <th>Precio Compra</th>
-                    <th>Stock</th>
-                    <th>Categoría</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Ruc</th>
+                    <th>Telefono</th>
+                    <th>Ciudad</th>
+                    <th>Email</th>
                     <th class="text-center">Acciones</th>
                 </tr>
                 </thead>
 
                 <tbody>
-                <tr th:each="producto : ${productos}">
-                    <td th:text="${producto.descripcion}"></td>
-                    <td th:text="${producto.precio_venta}"></td>
-                    <td th:text="${producto.precio_compra}"></td>
-                    <td th:text="${producto.stock}"></td>
-                    <td th:text="${producto.categoria.descripcion}"></td>
+                <tr th:each="clientes : ${clientes}">
+                    <td th:text="${clientes.nombre}"></td>
+                    <td th:text="${clientes.apellido}"></td>
+                    <td th:text="${clientes.ruc}"></td>
+                    <td th:text="${clientes.telefono}"></td>
+                    <td th:text="${clientes.ciudad.descripcion}"></td>
+                    <td th:text="${clientes.email}"></td>
                     <td class="text-center">
 
-                        <a th:href="@{/productos/editar/{id}(id=${producto.id})}"
+                        <a th:href="@{/clientes/editar/{id}(id=${clientes.id})}"
                            class="btn btn-sm btn-warning me-1">
                             <i class="bi bi-pencil-square"></i>
                         </a>
 
-                        <a th:href="@{/productos/{id}(id=${producto.id})}"
+                        <a th:href="@{/clientes/{id}(id=${clientes.id})}"
                            class="btn btn-sm btn-danger">
                             <i class="bi bi-trash"></i>
                         </a>

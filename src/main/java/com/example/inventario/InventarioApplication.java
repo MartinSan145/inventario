@@ -1,5 +1,6 @@
 package com.example.inventario;
 
+import com.example.inventario.repositorio.ClienteRepositorio;
 import com.example.inventario.repositorio.ProductoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -17,6 +18,7 @@ public class InventarioApplication implements CommandLineRunner {
 
     @Autowired
     private ProductoRepositorio repositorio;
+   private ClienteRepositorio clienteRepositorio;
     @Override
     public void run(String... args) throws Exception {
 

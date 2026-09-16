@@ -116,6 +116,9 @@ public class movimiento_stock {
         this.fecha = fecha;
     }
 
+    public movimiento_stock() {
+    }
+
     @Override
     public String toString() {
         return "movimiento_stock{" +

@@ -22,16 +22,47 @@ let filaFacturaActual = null;
                 return;
             }
 
-            if (monto <=0) {
-                alert("INGRESE UN MONTO VALIDO")
+            if (monto <= 0) {
+                alert("INGRESE UN MONTO VALIDO");
                 return;
             }
+
+            const totalFactura = parseFloat(
+                document.getElementById("totalPagar").dataset.valor
+            ) || 0;
+
+            const totalPagado = pagos.reduce((total, pago) => {
+                return total + pago.monto;
+            }, 0);
+
+           const saldoDisponible = totalFactura - totalPagado;
+
+           // Si el monto supera el saldo, se considera vuelto
+           let montoAplicado = monto;
+           let vuelto = 0;
+
+           if (monto > saldoDisponible) {
+               montoAplicado = saldoDisponible;
+               vuelto = monto - saldoDisponible;
+
+               alert(
+                   "El cliente entregó un monto superior al saldo.\n\n" +
+                   "Monto entregado: Gs. " +
+                   formatearGuaraniesPagos(monto) + "\n" +
+                   "Aplicado a la factura: Gs. " +
+                   formatearGuaraniesPagos(montoAplicado) + "\n" +
+                   "Vuelto: Gs. " +
+                   formatearGuaraniesPagos(vuelto)
+               );
+           }
 
 
             const pago = {
                 metodoId: metodoId,
                 metodoTexto: metodoTexto,
-                monto: monto,
+                monto: montoAplicado,
+                montoEntregado: monto,
+                vuelto: vuelto,
                 detalle: detalle
             };
 
@@ -54,7 +85,7 @@ let filaFacturaActual = null;
              <td>${detalle || "-"}</td>
 
              <td class="text-end">
-                Gs. ${formatearGuaraniesPagos(monto)}
+                Gs. ${formatearGuaraniesPagos(montoAplicado)}
              </td>
 
             <td class="text-center">
@@ -73,6 +104,7 @@ let filaFacturaActual = null;
 
 
             fila.remove();
+            limpiarFormularioPago();
 
 
             if (tabla.children.length === 0 && mensaje) {
@@ -206,6 +238,15 @@ function actualizarPago() {
         alert("No se encontró la factura");
         return;
     }
+
+    const totalFactura = parseFloat(
+        document.getElementById("totalPagar").dataset.valor
+    ) || 0;
+
+    const totalPagado = pagos.reduce((total, pago) => {
+        return total + pago.monto;
+    }, 0);
+
 
     const detalles = pagos.map(function(pago) {
 

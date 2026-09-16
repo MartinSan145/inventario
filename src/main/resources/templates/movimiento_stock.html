@@ -460,8 +460,31 @@
             </div>
 
 
+            <div th:if="${mensaje}"
+                 class="alert alert-success alert-dismissible fade show"
+                 role="alert">
 
+                <i class="bi bi-check-circle"></i>
+                <span th:text="${mensaje}"></span>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"></button>
+            </div>
+
+            <div th:if="${error}"
+                 class="alert alert-danger alert-dismissible fade show"
+                 role="alert">
+
+                <i class="bi bi-exclamation-triangle"></i>
+                <span th:text="${error}"></span>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"></button>
+            </div>
             <!-- TABLA -->
+
 
             <div class="table-responsive">
 
@@ -469,7 +492,6 @@
                        id="tablaStock">
 
                     <thead>
-
                     <tr>
 
                         <th>Producto</th>
@@ -489,16 +511,13 @@
                         </th>
 
                     </tr>
-
                     </thead>
-
 
                     <tbody>
 
                     <tr th:each="producto : ${productos}">
 
                         <!-- PRODUCTO -->
-
                         <td>
 
                             <div class="producto-descripcion"
@@ -512,114 +531,95 @@
 
 
                         <!-- CATEGORÍA -->
-
                         <td>
 
-                            <span class="categoria"
-                                  th:text="${producto.categoria.descripcion}">
+                <span class="categoria"
+                      th:text="${producto.categoria.descripcion}">
 
-                                Categoría
+                    Categoría
 
-                            </span>
+                </span>
 
                         </td>
 
 
                         <!-- STOCK -->
-
                         <td class="text-center">
 
                             <strong th:text="${producto.stock}">
-
                                 0
-
                             </strong>
 
                         </td>
 
 
                         <!-- ESTADO -->
-
                         <td class="text-center">
 
                             <!-- STOCK NORMAL -->
-
                             <span th:if="${producto.stock > 5}"
                                   class="badge-stock stock-normal">
 
-                                <i class="bi bi-check-circle"></i>
+                    <i class="bi bi-check-circle"></i>
+                    Disponible
 
-                                Disponible
-
-                            </span>
+                </span>
 
 
                             <!-- STOCK BAJO -->
-
                             <span th:if="${producto.stock > 0 and producto.stock <= 5}"
                                   class="badge-stock stock-bajo">
 
-                                <i class="bi bi-exclamation-triangle"></i>
+                    <i class="bi bi-exclamation-triangle"></i>
+                    Stock bajo
 
-                                Stock bajo
-
-                            </span>
+                </span>
 
 
                             <!-- SIN STOCK -->
-
                             <span th:if="${producto.stock == 0}"
                                   class="badge-stock stock-cero">
 
-                                <i class="bi bi-x-circle"></i>
+                    <i class="bi bi-x-circle"></i>
+                    Sin stock
 
-                                Sin stock
-
-                            </span>
+                </span>
 
                         </td>
 
 
                         <!-- ACCIONES -->
-
                         <td class="text-center">
 
                             <div class="btn-group">
 
                                 <!-- ENTRADA -->
-
                                 <button type="button"
                                         class="btn btn-sm btn-outline-success"
-                                        title="Entrada de stock"
-                                        th:onclick="'abrirMovimiento(' + ${producto.idProducto} + ', \'' + ${producto.descripcion} + '\', \'ENTRADA\')'">
+                                        th:attr="data-id=${producto.id}"
+                                        onclick="abrirMovimiento(this.dataset.id, 'ENTRADA')">
 
-                                    <i class="bi bi-plus-lg"></i>
+                                    <i class="bi bi-plus-circle"></i>
+                                    Entrada
 
                                 </button>
 
 
                                 <!-- SALIDA -->
-
                                 <button type="button"
                                         class="btn btn-sm btn-outline-danger"
-                                        title="Salida de stock"
-                                        th:onclick="'abrirMovimiento(' + ${producto.idProducto} + ', \'' + ${producto.descripcion} + '\', \'SALIDA\')'">
+                                        th:attr="data-id=${producto.id}"
+                                        onclick="abrirMovimiento(this.dataset.id, 'SALIDA')">
 
-                                    <i class="bi bi-dash-lg"></i>
+                                    <i class="bi bi-dash-circle"></i>
+                                    Salida
 
                                 </button>
 
 
                                 <!-- AJUSTE -->
-
-                                <button type="button"
-                                        class="btn btn-sm btn-outline-violeta"
-                                        title="Ajustar stock"
-                                        th:onclick="'abrirMovimiento(' + ${producto.idProducto} + ', \'' + ${producto.descripcion} + '\', \'AJUSTE\')'">
-
-                                    <i class="bi bi-arrow-repeat"></i>
-
-                                </button>
+                                <!-- Por ahora NO lo uses porque tu servicio todavía
+                                     solamente maneja ENTRADA y SALIDA -->
 
                             </div>
 
@@ -629,7 +629,6 @@
 
 
                     <!-- SIN PRODUCTOS -->
-
                     <tr th:if="${#lists.isEmpty(productos)}">
 
                         <td colspan="5"
@@ -719,7 +718,7 @@
                             </option>
 
                             <option th:each="producto : ${productos}"
-                                    th:value="${producto.idProducto}"
+                                    th:value="${producto.id}"
                                     th:text="${producto.descripcion}">
 
                             </option>
@@ -892,24 +891,20 @@
     // ABRIR MOVIMIENTO
     // ==========================================
 
-    function abrirMovimiento(idProducto, descripcion, tipo) {
+  function abrirMovimiento(idProducto, tipo) {
 
-        document.getElementById("idProducto").value =
-            idProducto;
+    document.getElementById("idProducto").value = idProducto;
 
-        document.getElementById("tipoMovimiento").value =
-            tipo;
+    document.getElementById("tipoMovimiento").value = tipo;
 
-        document.getElementById("cantidad").value = "";
+    document.getElementById("cantidad").value = "";
 
-        let modal =
-            new bootstrap.Modal(
-                document.getElementById("modalMovimiento")
-            );
+    let modal = new bootstrap.Modal(
+        document.getElementById("modalMovimiento")
+    );
 
-        modal.show();
-
-    }
+    modal.show();
+}
 
 </script>
 

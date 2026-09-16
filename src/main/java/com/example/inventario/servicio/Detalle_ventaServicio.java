@@ -8,4 +8,6 @@ public interface Detalle_ventaServicio {
 
     public List<Detalle_Factura> listarDetalle();
 
+
+
 }

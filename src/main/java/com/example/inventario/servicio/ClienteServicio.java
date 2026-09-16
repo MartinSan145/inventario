@@ -1,6 +1,7 @@
 package com.example.inventario.servicio;
 
 import com.example.inventario.entidad.Clientes;
+import com.example.inventario.entidad.Timbrado;
 
 import java.util.List;
 
@@ -14,5 +15,8 @@ public interface ClienteServicio {
 
     public Clientes actualizarClientes(Clientes clientes);
 
+    public Timbrado buscarPorId(Long timbradoId);
+
     public void eliminarClientes(Long id);
+
 }

@@ -18,8 +18,6 @@ public class ProductoControlador {
     @Autowired
     private ProductoServicio servicio;
 
-
-
     @GetMapping({"/productos","/"})
     public String listarProductos(Model modelo) {
         modelo.addAttribute("productos", servicio.listarTodoslosProductos());

@@ -15,15 +15,13 @@ public class InventarioApplication implements CommandLineRunner {
 	}
 
 
-
+//
     @Autowired
     private ProductoRepositorio repositorio;
    private ClienteRepositorio clienteRepositorio;
     @Override
     public void run(String... args) throws Exception {
 
-     //   Productos productos1 = new Productos("Producto1", 25, 3,5, 1, 2, true);
-      //  repositorio.save(productos1);
 
     }
 }

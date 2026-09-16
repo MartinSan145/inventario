@@ -25,11 +25,13 @@ public class ProductoServicioImple implements ProductoServicio{
 
     @Override
     public Productos obtenerProductosPorId(Long id) {
+
         return productoRepositorio.findById(id).get();
     }
 
     @Override
     public Productos actualizarProductos(Productos productos) {
+
         return productoRepositorio.save(productos);
     }
 

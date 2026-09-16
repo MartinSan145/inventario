@@ -1,0 +1,696 @@
+
+        /* =====================================================
+           VARIABLES VETSHOP
+           ===================================================== */
+
+        :root {
+
+            --vet-purple: #593196;
+            --vet-purple-dark: #47277a;
+            --vet-purple-light: #f4eff9;
+
+            --vet-text: #343a40;
+            --vet-gray: #6c757d;
+
+            --white: #ffffff;
+        }
+
+
+        /* =====================================================
+           BODY
+           ===================================================== */
+
+        body {
+
+            background-color: #f7f5fa;
+
+            min-height: 100vh;
+
+            color: var(--vet-text);
+        }
+
+
+        /* =====================================================
+           NAVBAR
+           ===================================================== */
+
+        .navbar-custom {
+
+            background-color: white;
+
+            box-shadow:
+                0 3px 15px rgba(0, 0, 0, 0.10);
+
+            padding: 8px 0;
+        }
+
+
+        /* LOGO */
+
+        .logo-navbar {
+
+            height: 40px;
+
+            width: auto;
+
+            object-fit: contain;
+        }
+
+
+        /* TEXTO AL LADO DEL LOGO */
+
+        .system-name {
+
+            border-left: 1px solid #ddd;
+
+            margin-left: 15px;
+
+            padding-left: 15px;
+
+            color: var(--vet-purple);
+
+            font-weight: 600;
+
+            font-size: 0.95rem;
+        }
+
+
+        /* =====================================================
+           USUARIO
+           ===================================================== */
+
+        .user-info {
+
+            color: var(--vet-text);
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+        }
+
+
+        .user-info i {
+
+            color: var(--vet-purple);
+
+            font-size: 1.25rem;
+        }
+
+
+        /* =====================================================
+           BOTONES
+           ===================================================== */
+
+        .btn-vet {
+
+            background-color: var(--vet-purple);
+
+            border-color: var(--vet-purple);
+
+            color: white;
+
+            border-radius: 8px;
+
+            padding: 8px 18px;
+
+            font-weight: 500;
+
+            transition: all 0.2s ease;
+        }
+
+
+        .btn-vet:hover {
+
+            background-color: var(--vet-purple-dark);
+
+            border-color: var(--vet-purple-dark);
+
+            color: white;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* BOTÓN OUTLINE */
+
+        .btn-vet-outline {
+
+            color: var(--vet-purple);
+
+            border: 1px solid var(--vet-purple);
+
+            border-radius: 8px;
+
+            padding: 7px 15px;
+
+            background-color: white;
+        }
+
+
+        .btn-vet-outline:hover {
+
+            background-color: var(--vet-purple);
+
+            color: white;
+        }
+
+
+        /* =====================================================
+           CONTENEDOR
+           ===================================================== */
+
+        .main-container {
+
+            max-width: 1200px;
+
+            margin: 0 auto;
+
+            padding: 35px 20px;
+        }
+
+
+        /* =====================================================
+           ENCABEZADO DE PÁGINA
+           ===================================================== */
+
+        .page-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 25px;
+        }
+
+
+        .page-title {
+
+            color: var(--vet-purple);
+
+            font-weight: 700;
+
+            margin-bottom: 5px;
+        }
+
+
+        .page-title i {
+
+            margin-right: 8px;
+        }
+
+
+        .page-subtitle {
+
+            color: var(--vet-gray);
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           TARJETA
+           ===================================================== */
+
+        .product-card {
+
+            border: none;
+
+            border-radius: 16px;
+
+            background-color: white;
+
+            box-shadow:
+                0 5px 18px rgba(0, 0, 0, 0.08);
+
+            overflow: hidden;
+        }
+
+
+        /* =====================================================
+           HEADER DE TARJETA
+           ===================================================== */
+
+        .product-card-header {
+
+            background-color: var(--vet-purple);
+
+            color: white;
+
+            padding: 18px 22px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+        }
+
+
+        .product-card-header h5 {
+
+            margin: 0;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           TABLA
+           ===================================================== */
+
+        .table-container {
+
+            overflow-x: auto;
+        }
+
+
+        .table {
+
+            margin-bottom: 0;
+        }
+
+
+        .table thead th {
+
+            background-color: var(--vet-purple-light);
+
+            color: var(--vet-purple);
+
+            border-bottom: 2px solid #ddd;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+
+        .table tbody td {
+
+            vertical-align: middle;
+
+            padding: 13px 12px;
+        }
+
+
+        .table tbody tr {
+
+            transition: background-color 0.15s ease;
+        }
+
+
+        .table tbody tr:hover {
+
+            background-color: #faf8fc;
+        }
+
+
+        /* =====================================================
+           PRECIO
+           ===================================================== */
+
+        .price {
+
+            font-weight: 600;
+
+            color: var(--vet-purple);
+        }
+
+
+        /* =====================================================
+           STOCK
+           ===================================================== */
+
+        .stock {
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           BOTONES ACCIONES
+           ===================================================== */
+
+        .btn-action {
+
+            width: 36px;
+
+            height: 36px;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 8px;
+
+            border: none;
+        }
+
+
+        .btn-edit {
+
+            background-color: #fff3cd;
+
+            color: #856404;
+        }
+
+
+        .btn-edit:hover {
+
+            background-color: #ffc107;
+
+            color: white;
+        }
+
+
+        .btn-delete {
+
+            background-color: #f8d7da;
+
+            color: #842029;
+        }
+
+
+        .btn-delete:hover {
+
+            background-color: #dc3545;
+
+            color: white;
+        }
+
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+
+        footer {
+
+            text-align: center;
+
+            color: var(--vet-gray);
+
+            font-size: 0.85rem;
+
+            padding: 20px;
+
+            margin-top: 10px;
+        }
+
+
+        footer strong {
+
+            color: var(--vet-purple);
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+           ===================================================== */
+
+        @media (max-width: 768px) {
+
+            .logo-navbar {
+
+                height: 55px;
+            }
+
+
+            .system-name {
+
+                display: none;
+            }
+
+
+            .user-info span {
+
+                display: none;
+            }
+
+
+            .main-container {
+
+                padding: 25px 15px;
+            }
+
+
+            .page-header {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+
+            .page-header .btn-vet {
+
+                width: 100%;
+            }
+
+        }
+
+
+        @media (max-width: 576px) {
+
+            .user-info {
+
+                gap: 4px;
+            }
+
+
+            .btn-vet-outline {
+
+                padding: 6px 9px;
+            }
+
+
+            .btn-vet-outline span {
+
+                display: none;
+            }
+
+        }
+/* =========================================================
+   VETSHOP - FORMULARIO REGISTRO DE PRODUCTO
+   ========================================================= */
+
+.product-form-container {
+    max-width: 500px;
+    margin: 5px auto;
+    padding: 1 5px;
+}
+
+
+/* CARD DEL FORMULARIO */
+
+.product-form-card {
+    background: #ffffff;
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.10);
+}
+
+
+/* ENCABEZADO */
+
+.product-form-header {
+    background: linear-gradient(
+        135deg,
+        #593196,
+        #7042b5
+    );
+
+    color: white;
+    padding: 20px 25px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.product-form-header i {
+    font-size: 1.4rem;
+}
+
+
+.product-form-header h4 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+
+/* CUERPO */
+
+.product-form-body {
+    padding: 30px;
+}
+
+
+/* ETIQUETAS */
+
+.product-form-body .form-label {
+    color: #343a40;
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+
+
+/* CAMPOS */
+
+.product-form-body .form-control,
+.product-form-body .form-select {
+    min-height: 46px;
+
+    border: 1px solid #dee2e6;
+    border-radius: 9px;
+
+    padding: 10px 13px;
+
+    background-color: #fff;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+/* PLACEHOLDER */
+
+.product-form-body .form-control::placeholder {
+    color: #9a9a9a;
+}
+
+
+/* FOCUS */
+
+.product-form-body .form-control:focus,
+.product-form-body .form-select:focus {
+
+    border-color: #593196;
+
+    box-shadow:
+        0 0 0 3px rgba(89, 49, 150, 0.12);
+
+    outline: none;
+}
+
+
+/* ESPACIADO ENTRE CAMPOS */
+
+.product-form-group {
+    margin-bottom: 20px;
+}
+
+
+/* BOTONES */
+
+.product-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+
+    margin-top: 28px;
+}
+
+
+/* BOTÓN GUARDAR */
+
+.product-form-save {
+    background: #593196;
+    border: 1px solid #593196;
+
+    color: white;
+
+    border-radius: 9px;
+
+    padding: 10px 22px;
+
+    font-weight: 600;
+
+    transition: all 0.2s ease;
+}
+
+
+.product-form-save:hover {
+    background: #47277a;
+    border-color: #47277a;
+
+    color: white;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 12px rgba(89, 49, 150, 0.25);
+}
+
+
+.product-form-save i {
+    margin-right: 5px;
+}
+
+
+/* BOTÓN CANCELAR */
+
+.product-form-cancel {
+    background: white;
+
+    color: #593196;
+
+    border: 1px solid #593196;
+
+    border-radius: 9px;
+
+    padding: 10px 20px;
+
+    font-weight: 600;
+}
+
+
+.product-form-cancel:hover {
+    background: #f4eff9;
+    color: #47277a;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 576px) {
+
+    .product-form-container {
+        margin: 20px auto;
+        padding: 0 10px;
+    }
+
+    .product-form-body {
+        padding: 22px 18px;
+    }
+
+    .product-form-header {
+        padding: 17px 20px;
+    }
+
+    .product-form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .product-form-save,
+    .product-form-cancel {
+        width: 100%;
+    }
+}

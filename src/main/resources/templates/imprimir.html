@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title th:text="'Factura ' + ${factura.nro_factura}">
+        Factura
+    </title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+    <style>
+
+        :root {
+
+            --vet-purple: #593196;
+            --vet-purple-dark: #47277a;
+            --vet-purple-light: #f4eff9;
+
+            --vet-text: #343a40;
+            --vet-gray: #6c757d;
+
+        }
+
+
+        body {
+
+            background-color: #f2f2f2;
+
+            color: var(--vet-text);
+
+            font-family: Arial, sans-serif;
+
+            padding: 30px;
+
+        }
+
+
+        /* ===============================
+           CONTENEDOR FACTURA
+        =============================== */
+
+        .factura {
+
+            width: 900px;
+
+            max-width: 100%;
+
+            margin: auto;
+
+            background-color: white;
+
+            padding: 35px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,.12);
+
+        }
+
+
+        /* ===============================
+           CABECERA
+        =============================== */
+
+        .cabecera {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-start;
+
+            border-bottom: 3px solid var(--vet-purple);
+
+            padding-bottom: 20px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .empresa {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+        }
+
+
+        .logo {
+
+            height: 75px;
+
+            width: auto;
+
+            object-fit: contain;
+
+        }
+
+
+        .empresa-info h2 {
+
+            color: var(--vet-purple);
+
+            margin: 0;
+
+            font-weight: 700;
+
+        }
+
+
+        .empresa-info p {
+
+            margin: 3px 0;
+
+            color: var(--vet-gray);
+
+            font-size: 14px;
+
+        }
+
+
+        /* ===============================
+           DATOS FACTURA
+        =============================== */
+
+        .datos-factura {
+
+            border: 1px solid #ddd;
+
+            border-radius: 8px;
+
+            padding: 15px;
+
+            min-width: 270px;
+
+        }
+
+
+        .datos-factura h4 {
+
+            color: var(--vet-purple);
+
+            font-weight: bold;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .dato {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            font-size: 14px;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .dato strong {
+
+            color: var(--vet-text);
+
+        }
+
+
+        /* ===============================
+           CLIENTE
+        =============================== */
+
+        .seccion {
+
+            border: 1px solid #ddd;
+
+            border-radius: 8px;
+
+            margin-bottom: 20px;
+
+            overflow: hidden;
+
+        }
+
+
+        .seccion-header {
+
+            background-color: var(--vet-purple-light);
+
+            color: var(--vet-purple);
+
+            font-weight: bold;
+
+            padding: 10px 15px;
+
+        }
+
+
+        .seccion-body {
+
+            padding: 15px;
+
+        }
+
+
+        .cliente-grid {
+
+            display: grid;
+
+            grid-template-columns: 2fr 1fr;
+
+            gap: 15px;
+
+        }
+
+
+        /* ===============================
+           TABLA
+        =============================== */
+
+        .tabla {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+        }
+
+
+        .tabla th {
+
+            background-color: var(--vet-purple);
+
+            color: white;
+
+            padding: 10px;
+
+            font-size: 14px;
+
+        }
+
+
+        .tabla td {
+
+            padding: 10px;
+
+            border-bottom: 1px solid #ddd;
+
+            font-size: 14px;
+
+        }
+
+
+        .tabla tbody tr:last-child td {
+
+            border-bottom: none;
+
+        }
+
+
+        .text-end {
+
+            text-align: right;
+
+        }
+
+
+        .text-center {
+
+            text-align: center;
+
+        }
+
+
+        /* ===============================
+           TOTAL
+        =============================== */
+
+        .total-container {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            margin-top: 20px;
+
+        }
+
+
+        .total-box {
+
+            width: 300px;
+
+            border: 2px solid var(--vet-purple);
+
+            border-radius: 8px;
+
+            overflow: hidden;
+
+        }
+
+
+        .total-row {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            padding: 12px 15px;
+
+        }
+
+
+        .total-row-final {
+
+            background-color: var(--vet-purple-light);
+
+            color: var(--vet-purple);
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+        }
+
+
+        /* ===============================
+           PIE
+        =============================== */
+
+        .pie {
+
+            margin-top: 35px;
+
+            padding-top: 15px;
+
+            border-top: 1px solid #ddd;
+
+            text-align: center;
+
+            color: var(--vet-gray);
+
+            font-size: 13px;
+
+        }
+
+
+        /* ===============================
+           BOTONES
+        =============================== */
+
+        .acciones {
+
+            width: 900px;
+
+            max-width: 100%;
+
+            margin: 20px auto;
+
+            text-align: right;
+
+        }
+
+
+        /* ===============================
+           IMPRESIÓN
+        =============================== */
+
+        @media print {
+
+            body {
+
+                background-color: white;
+
+                padding: 0;
+
+            }
+
+
+            .factura {
+
+                width: 100%;
+
+                max-width: none;
+
+                box-shadow: none;
+
+                padding: 10px;
+
+            }
+
+
+            .acciones {
+
+                display: none;
+
+            }
+
+
+            @page {
+
+                size: A4;
+
+                margin: 12mm;
+
+            }
+
+        }
+
+
+        /* ===============================
+           RESPONSIVE
+        =============================== */
+
+        @media (max-width: 700px) {
+
+            body {
+
+                padding: 10px;
+
+            }
+
+
+            .cabecera {
+
+                flex-direction: column;
+
+                gap: 20px;
+
+            }
+
+
+            .datos-factura {
+
+                width: 100%;
+
+            }
+
+
+            .cliente-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     BOTÓN
+===================================================== -->
+
+<div class="acciones">
+
+    <button type="button"
+            class="btn btn-primary"
+            onclick="window.print()">
+
+        <i class="bi bi-printer"></i>
+
+        Imprimir
+
+    </button>
+
+
+    <button type="button"
+            class="btn btn-secondary"
+            onclick="window.close()">
+
+        <i class="bi bi-x-circle"></i>
+
+        Cerrar
+
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     FACTURA
+===================================================== -->
+
+<div class="factura">
+
+
+    <!-- =================================================
+         CABECERA
+    ================================================== -->
+
+    <div class="cabecera">
+
+
+        <div class="empresa">
+
+            <img src="/img/loogo.PNG"
+                 alt="VETSHOP"
+                 class="logo">
+
+
+            <div class="empresa-info">
+
+                <h2>VETSHOP</h2>
+
+                <p>
+                    Dra. Sheila Sánchez
+                </p>
+
+                <p>
+                    Gestión Veterinaria
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- DATOS FACTURA -->
+
+        <div class="datos-factura">
+
+            <h4>FACTURA</h4>
+
+
+            <div class="dato">
+
+                <span>N°:</span>
+
+                <strong th:text="${factura.nro_factura}">
+                </strong>
+
+            </div>
+
+
+            <div class="dato">
+
+                <span>Fecha:</span>
+
+                <strong
+                        th:text="${#temporals.format(factura.fecha, 'dd/MM/yyyy HH:mm')}">
+                </strong>
+
+            </div>
+
+
+            <div class="dato">
+
+                <span>Estado:</span>
+
+                <strong th:text="${factura.estado}">
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         DATOS DEL TIMBRADO
+    ================================================== -->
+
+    <div class="seccion">
+
+        <div class="seccion-header">
+
+            <i class="bi bi-receipt"></i>
+
+            Datos del comprobante
+
+        </div>
+
+
+        <div class="seccion-body">
+
+
+            <div class="cliente-grid">
+
+                <div>
+
+                    <strong>Timbrado:</strong>
+
+                    <span th:text="${factura.timbrado.nro_timbrado}">
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong>Establecimiento:</strong>
+
+                    <span th:text="${factura.timbrado.cod_establecimiento}">
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong>Punto de Expedición:</strong>
+
+                    <span th:text="${factura.timbrado.expedicion}">
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong>Vigencia:</strong>
+
+                    <span th:text="${#temporals.format(factura.timbrado.inicio_vigencia, 'dd/MM/yyyy')}">
+                    </span>
+
+                    -
+
+                    <span th:text="${#temporals.format(factura.timbrado.fin_vigencia, 'dd/MM/yyyy')}">
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         CLIENTE
+    ================================================== -->
+
+    <div class="seccion">
+
+        <div class="seccion-header">
+
+            <i class="bi bi-person"></i>
+
+            Datos del cliente
+
+        </div>
+
+
+        <div class="seccion-body">
+
+
+            <div class="cliente-grid">
+
+
+                <div>
+
+                    <strong>Cliente:</strong>
+
+                    <span
+                            th:text="${factura.cliente.nombre + ' ' + factura.cliente.apellido}">
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong>RUC:</strong>
+
+                    <span th:text="${factura.cliente.ruc}">
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         DETALLES
+    ================================================== -->
+
+    <div class="seccion">
+
+        <div class="seccion-header">
+
+            <i class="bi bi-cart"></i>
+
+            Detalle de la venta
+
+        </div>
+
+
+        <div class="seccion-body p-0">
+
+
+            <table class="tabla">
+
+
+                <thead>
+
+                <tr>
+
+                    <th style="width: 80px;"
+                        class="text-center">
+
+                        Cant.
+
+                    </th>
+
+
+                    <th>
+
+                        Producto
+
+                    </th>
+
+
+                    <th style="width: 150px;"
+                        class="text-end">
+
+                        Precio Unitario
+
+                    </th>
+
+
+                    <th style="width: 150px;"
+                        class="text-end">
+
+                        Subtotal
+
+                    </th>
+
+                </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                <tr th:each="detalle : ${factura.detalle_facturas}">
+
+
+                    <td class="text-center"
+                        th:text="${detalle.cantidad}">
+
+                    </td>
+
+
+                    <td th:text="${detalle.producto.descripcion}">
+
+                    </td>
+
+
+                    <td class="text-end"
+                        th:text="${#numbers.formatDecimal(detalle.precio_unitario, 0, 'COMMA', 0, 'POINT')}">
+
+                    </td>
+
+
+                    <td class="text-end"
+                        th:text="${#numbers.formatDecimal(detalle.subtotal, 0, 'COMMA', 0, 'POINT')}">
+
+                    </td>
+
+
+                </tr>
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         TOTAL
+    ================================================== -->
+
+    <div class="total-container">
+
+
+        <div class="total-box">
+
+
+            <div class="total-row">
+
+                <span>Subtotal</span>
+
+                <strong
+                        th:text="${#numbers.formatDecimal(factura.total, 0, 'COMMA', 0, 'POINT')}">
+                </strong>
+
+            </div>
+
+
+            <div class="total-row total-row-final">
+
+                <span>TOTAL</span>
+
+                <span>
+
+                    Gs.
+
+                    <span
+                            th:text="${#numbers.formatDecimal(factura.total, 0, 'COMMA', 0, 'POINT')}">
+                    </span>
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         PIE
+    ================================================== -->
+
+    <div class="pie">
+
+        <strong>VETSHOP</strong>
+
+        · Dra. Sheila Sánchez
+
+        · Gestión Veterinaria
+
+
+        <br>
+
+
+        Gracias por su compra.
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+    window.addEventListener("load", function () {
+
+        window.print();
+
+    });
+
+</script>
+
+
+</body>
+
+</html>

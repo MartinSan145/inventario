@@ -18,25 +18,44 @@ public class Detalle_Factura {
     @Column(name = "cantidad", nullable = false)
     private int cantidad;
 
+    @ManyToOne
+    @JoinColumn(name = "id_producto")
+    private Productos producto;
+
     @Column(name = "precio_unitario", nullable = false)
     private double precio_unitario;
 
     @Column(name = "subtotal", nullable = false)
     private double subtotal;
 
-    public Detalle_Factura(Long id, Factura_venta factura_venta, int cantidad, double precio_unitario, double subtotal) {
+    public Detalle_Factura(Long id, Factura_venta factura_venta, int cantidad, double precio_unitario, double subtotal, Productos producto) {
         this.id = id;
         this.factura_venta = factura_venta;
         this.cantidad = cantidad;
         this.precio_unitario = precio_unitario;
         this.subtotal = subtotal;
+        this.producto = producto;
+
     }
 
-    public Detalle_Factura(Factura_venta factura_venta, int cantidad, double precio_unitario, double subtotal) {
+    public Detalle_Factura(Factura_venta factura_venta, int cantidad, double precio_unitario, double subtotal, Productos producto) {
         this.factura_venta = factura_venta;
         this.cantidad = cantidad;
         this.precio_unitario = precio_unitario;
         this.subtotal = subtotal;
+        this.producto = producto;
+    }
+
+    public Detalle_Factura(Productos producto) {
+        this.producto = producto;
+    }
+
+    public Productos getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Productos producto) {
+        this.producto = producto;
     }
 
     public Detalle_Factura() {
@@ -81,4 +100,6 @@ public class Detalle_Factura {
     public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;
     }
+
 }
+

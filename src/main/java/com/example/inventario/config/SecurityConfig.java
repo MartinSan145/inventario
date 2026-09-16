@@ -21,9 +21,10 @@ public class SecurityConfig {
                         .requestMatchers("/login","/css/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                .csrf(csrf -> csrf .ignoringRequestMatchers("/guardar-pago") )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/productos", true)
+                        .defaultSuccessUrl("/menu", true)
                        /// .defaultSuccessUrl("/clientes", true)
                         .permitAll()
                 )

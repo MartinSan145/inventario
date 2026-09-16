@@ -1,0 +1,920 @@
+
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Control de Stock | VETSHOP</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/pulse/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+
+        body {
+            background-color: #f4eff9;
+        }
+
+        .navbar-vetshop {
+            background-color: #593196;
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            color: white !important;
+        }
+
+        .logo {
+            height: 48px;
+            width: auto;
+            object-fit: contain;
+            margin-right: 10px;
+        }
+
+        .usuario {
+            color: white;
+            font-size: 14px;
+        }
+
+        .titulo-pagina {
+            color: #47277a;
+            font-weight: 600;
+        }
+
+        .card-resumen {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .icono-resumen {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 24px;
+        }
+
+        .icono-productos {
+            background-color: #eee5fa;
+            color: #593196;
+        }
+
+        .icono-bajo {
+            background-color: #fff0d9;
+            color: #d88900;
+        }
+
+        .icono-sin {
+            background-color: #fde3e3;
+            color: #c62828;
+        }
+
+        .card-tabla {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .table thead {
+            background-color: #f1eef8;
+            color: #47277a;
+        }
+
+        .table th {
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .badge-stock {
+            font-size: 13px;
+            padding: 7px 10px;
+            border-radius: 8px;
+        }
+
+        .stock-normal {
+            background-color: #e4f5e9;
+            color: #237a3b;
+        }
+
+        .stock-bajo {
+            background-color: #fff0d9;
+            color: #a56500;
+        }
+
+        .stock-cero {
+            background-color: #fde3e3;
+            color: #b3261e;
+        }
+
+        .btn-violeta {
+            background-color: #593196;
+            border-color: #593196;
+            color: white;
+        }
+
+        .btn-violeta:hover {
+            background-color: #47277a;
+            border-color: #47277a;
+            color: white;
+        }
+
+        .btn-outline-violeta {
+            color: #593196;
+            border-color: #593196;
+        }
+
+        .btn-outline-violeta:hover {
+            background-color: #593196;
+            color: white;
+        }
+
+        .modal-header {
+            background-color: #593196;
+            color: white;
+        }
+
+        .btn-close {
+            filter: brightness(0) invert(1);
+        }
+
+        .producto-descripcion {
+            font-weight: 500;
+            color: #47277a;
+        }
+
+        .categoria {
+            color: #777;
+            font-size: 13px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<!-- ===================================================== -->
+<!-- NAVBAR -->
+<!-- ===================================================== -->
+
+<nav class="navbar navbar-vetshop shadow-sm">
+
+    <div class="container-fluid">
+
+        <a class="navbar-brand d-flex align-items-center"
+           th:href="@{/menu}">
+
+            <img th:src="@{/img/loogo.PNG}"
+                 alt="VETSHOP - Dra. Sheila Sánchez"
+                 class="logo">
+
+            <div>
+                <div>VETSHOP</div>
+
+                <small style="font-size: 12px; font-weight: normal;">
+                    Gestión Veterinaria
+                </small>
+            </div>
+
+        </a>
+
+
+        <div class="d-flex align-items-center gap-3">
+
+            <span class="usuario">
+                <i class="bi bi-person-circle"></i>
+                Administrador
+            </span>
+
+            <a th:href="@{/menu}"
+               class="btn btn-light btn-sm">
+
+                <i class="bi bi-house"></i>
+                Menú
+
+            </a>
+
+            <a th:href="@{/logout}"
+               class="btn btn-outline-light btn-sm">
+
+                <i class="bi bi-box-arrow-right"></i>
+                Salir
+
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- ===================================================== -->
+<!-- CONTENIDO -->
+<!-- ===================================================== -->
+
+<div class="container-fluid py-4 px-4">
+
+
+    <!-- TÍTULO -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h3 class="titulo-pagina mb-1">
+
+                <i class="bi bi-box-seam"></i>
+
+                Control de Stock
+
+            </h3>
+
+            <p class="text-muted mb-0">
+
+                Consulta y administra el stock de los productos veterinarios.
+
+            </p>
+
+        </div>
+
+
+        <a th:href="@{/menu}"
+           class="btn btn-outline-violeta">
+
+            <i class="bi bi-arrow-left"></i>
+
+            Volver
+
+        </a>
+
+    </div>
+
+
+
+    <!-- ================================================= -->
+    <!-- TARJETAS DE RESUMEN -->
+    <!-- ================================================= -->
+
+    <div class="row g-3 mb-4">
+
+
+        <!-- TOTAL PRODUCTOS -->
+
+        <div class="col-md-4">
+
+            <div class="card card-resumen">
+
+                <div class="card-body">
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="icono-resumen icono-productos">
+
+                            <i class="bi bi-boxes"></i>
+
+                        </div>
+
+                        <div class="ms-3">
+
+                            <div class="text-muted small">
+
+                                Total de productos
+
+                            </div>
+
+                            <h4 class="mb-0"
+                                th:text="${totalProductos}">
+
+                                0
+
+                            </h4>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- STOCK BAJO -->
+
+        <div class="col-md-4">
+
+            <div class="card card-resumen">
+
+                <div class="card-body">
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="icono-resumen icono-bajo">
+
+                            <i class="bi bi-exclamation-triangle"></i>
+
+                        </div>
+
+                        <div class="ms-3">
+
+                            <div class="text-muted small">
+
+                                Stock bajo
+
+                            </div>
+
+                            <h4 class="mb-0"
+                                th:text="${productosStockBajo}">
+
+                                0
+
+                            </h4>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- SIN STOCK -->
+
+        <div class="col-md-4">
+
+            <div class="card card-resumen">
+
+                <div class="card-body">
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="icono-resumen icono-sin">
+
+                            <i class="bi bi-x-circle"></i>
+
+                        </div>
+
+                        <div class="ms-3">
+
+                            <div class="text-muted small">
+
+                                Sin stock
+
+                            </div>
+
+                            <h4 class="mb-0"
+                                th:text="${productosSinStock}">
+
+                                0
+
+                            </h4>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================================================= -->
+    <!-- TABLA -->
+    <!-- ================================================= -->
+
+    <div class="card card-tabla">
+
+        <div class="card-body">
+
+
+            <!-- BUSCADOR -->
+
+            <div class="row mb-3">
+
+                <div class="col-md-6">
+
+                    <div class="input-group">
+
+                        <span class="input-group-text">
+
+                            <i class="bi bi-search"></i>
+
+                        </span>
+
+                        <input type="text"
+                               id="buscarProducto"
+                               class="form-control"
+                               placeholder="Buscar producto...">
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6 text-end">
+
+                    <button class="btn btn-violeta"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalMovimiento">
+
+                        <i class="bi bi-plus-circle"></i>
+
+                        Registrar movimiento
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TABLA -->
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle"
+                       id="tablaStock">
+
+                    <thead>
+
+                    <tr>
+
+                        <th>Producto</th>
+
+                        <th>Categoría</th>
+
+                        <th class="text-center">
+                            Stock actual
+                        </th>
+
+                        <th class="text-center">
+                            Estado
+                        </th>
+
+                        <th class="text-center">
+                            Acciones
+                        </th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    <tr th:each="producto : ${productos}">
+
+                        <!-- PRODUCTO -->
+
+                        <td>
+
+                            <div class="producto-descripcion"
+                                 th:text="${producto.descripcion}">
+
+                                Producto
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- CATEGORÍA -->
+
+                        <td>
+
+                            <span class="categoria"
+                                  th:text="${producto.categoria.descripcion}">
+
+                                Categoría
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- STOCK -->
+
+                        <td class="text-center">
+
+                            <strong th:text="${producto.stock}">
+
+                                0
+
+                            </strong>
+
+                        </td>
+
+
+                        <!-- ESTADO -->
+
+                        <td class="text-center">
+
+                            <!-- STOCK NORMAL -->
+
+                            <span th:if="${producto.stock > 5}"
+                                  class="badge-stock stock-normal">
+
+                                <i class="bi bi-check-circle"></i>
+
+                                Disponible
+
+                            </span>
+
+
+                            <!-- STOCK BAJO -->
+
+                            <span th:if="${producto.stock > 0 and producto.stock <= 5}"
+                                  class="badge-stock stock-bajo">
+
+                                <i class="bi bi-exclamation-triangle"></i>
+
+                                Stock bajo
+
+                            </span>
+
+
+                            <!-- SIN STOCK -->
+
+                            <span th:if="${producto.stock == 0}"
+                                  class="badge-stock stock-cero">
+
+                                <i class="bi bi-x-circle"></i>
+
+                                Sin stock
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- ACCIONES -->
+
+                        <td class="text-center">
+
+                            <div class="btn-group">
+
+                                <!-- ENTRADA -->
+
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-success"
+                                        title="Entrada de stock"
+                                        th:onclick="'abrirMovimiento(' + ${producto.idProducto} + ', \'' + ${producto.descripcion} + '\', \'ENTRADA\')'">
+
+                                    <i class="bi bi-plus-lg"></i>
+
+                                </button>
+
+
+                                <!-- SALIDA -->
+
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-danger"
+                                        title="Salida de stock"
+                                        th:onclick="'abrirMovimiento(' + ${producto.idProducto} + ', \'' + ${producto.descripcion} + '\', \'SALIDA\')'">
+
+                                    <i class="bi bi-dash-lg"></i>
+
+                                </button>
+
+
+                                <!-- AJUSTE -->
+
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-violeta"
+                                        title="Ajustar stock"
+                                        th:onclick="'abrirMovimiento(' + ${producto.idProducto} + ', \'' + ${producto.descripcion} + '\', \'AJUSTE\')'">
+
+                                    <i class="bi bi-arrow-repeat"></i>
+
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- SIN PRODUCTOS -->
+
+                    <tr th:if="${#lists.isEmpty(productos)}">
+
+                        <td colspan="5"
+                            class="text-center text-muted py-4">
+
+                            <i class="bi bi-box-seam fs-2 d-block mb-2"></i>
+
+                            No hay productos registrados.
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- MODAL MOVIMIENTO -->
+<!-- ===================================================== -->
+
+<div class="modal fade"
+     id="modalMovimiento"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    <i class="bi bi-box-seam"></i>
+
+                    Registrar movimiento de stock
+
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+
+                </button>
+
+            </div>
+
+
+            <form th:action="@{/stock/movimiento}"
+                  method="post">
+
+
+                <div class="modal-body">
+
+
+                    <!-- PRODUCTO -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Producto
+
+                        </label>
+
+                        <select name="idProducto"
+                                id="idProducto"
+                                class="form-select"
+                                required>
+
+                            <option value="">
+
+                                Seleccionar producto
+
+                            </option>
+
+                            <option th:each="producto : ${productos}"
+                                    th:value="${producto.idProducto}"
+                                    th:text="${producto.descripcion}">
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- TIPO -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Tipo de movimiento
+
+                        </label>
+
+                        <select name="tipoMovimiento"
+                                id="tipoMovimiento"
+                                class="form-select"
+                                required>
+
+                            <option value="">
+
+                                Seleccionar
+
+                            </option>
+
+                            <option value="ENTRADA">
+
+                                ➕ Entrada
+
+                            </option>
+
+                            <option value="SALIDA">
+
+                                ➖ Salida
+
+                            </option>
+
+                            <option value="AJUSTE">
+
+                                🔄 Ajuste
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- CANTIDAD -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Cantidad
+
+                        </label>
+
+                        <input type="number"
+                               name="cantidad"
+                               id="cantidad"
+                               class="form-control"
+                               min="1"
+                               required>
+
+                    </div>
+
+
+
+                    <!-- MOTIVO -->
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Motivo
+
+                        </label>
+
+                        <textarea name="motivo"
+                                  class="form-control"
+                                  rows="3"
+                                  placeholder="Ej.: Compra de mercadería, venta, vencimiento, ajuste...">
+
+                        </textarea>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+
+                        Cancelar
+
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-violeta">
+
+                        <i class="bi bi-check-circle"></i>
+
+                        Registrar movimiento
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ===================================================== -->
+<!-- JAVASCRIPT -->
+<!-- ===================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+<script>
+
+    // ==========================================
+    // BUSCADOR
+    // ==========================================
+
+    document.getElementById("buscarProducto")
+        .addEventListener("keyup", function () {
+
+            let texto = this.value.toLowerCase();
+
+            let filas = document.querySelectorAll(
+                "#tablaStock tbody tr"
+            );
+
+            filas.forEach(function (fila) {
+
+                let contenido = fila.textContent.toLowerCase();
+
+                fila.style.display =
+                    contenido.includes(texto)
+                        ? ""
+                        : "none";
+
+            });
+
+        });
+
+
+
+    // ==========================================
+    // ABRIR MOVIMIENTO
+    // ==========================================
+
+    function abrirMovimiento(idProducto, descripcion, tipo) {
+
+        document.getElementById("idProducto").value =
+            idProducto;
+
+        document.getElementById("tipoMovimiento").value =
+            tipo;
+
+        document.getElementById("cantidad").value = "";
+
+        let modal =
+            new bootstrap.Modal(
+                document.getElementById("modalMovimiento")
+            );
+
+        modal.show();
+
+    }
+
+</script>
+
+
+</body>
+
+</html>
+

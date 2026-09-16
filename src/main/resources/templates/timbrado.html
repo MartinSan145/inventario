@@ -2,7 +2,7 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Lista de Clientes</title>
+    <title>Lista de Timbrados</title>
 
     <!-- Bootswatch -->
     <link rel="stylesheet"
@@ -11,11 +11,23 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-
     <link rel="stylesheet"
           th:href="@{/css/vetshop.css}">
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,.15);
+        }
+        .table thead th {
+            background-color: #593196;
+            color: #fff;
+        }
+    </style>
 
-    <script th:src="@{/js/clientes.js}" defer></script>
+
 </head>
 
 <body>
@@ -83,8 +95,12 @@
 
 </nav>
 
-<!-- CONTENIDO -->
-<div class="container mt-5">
+<main class="main-container">
+
+
+    <!-- =================================================
+         ENCABEZADO
+         ================================================= -->
 
     <div class="page-header">
 
@@ -95,14 +111,14 @@
 
                 <i class="bi bi-box-seam"></i>
 
-                Cliente
+                Timbrados
 
             </h2>
 
 
             <p class="page-subtitle">
 
-                Administra los clientes
+                Administra los timbrados
                 de VETSHOP.
 
             </p>
@@ -110,12 +126,12 @@
         </div>
 
 
-        <a th:href="@{/clientes/nuevo}"
+        <a th:href="@{/timbrado/nuevo}"
            class="btn btn-vet">
 
             <i class="bi bi-plus-circle"></i>
 
-            Nuevo cliente
+            Nuevo timbrado
 
         </a>
 
@@ -123,7 +139,9 @@
 
 
 
-
+    <!-- =================================================
+         TARJETA PRODUCTOS
+         ================================================= -->
 
     <div class="card product-card">
 
@@ -136,7 +154,7 @@
 
                 <i class="bi bi-list-ul"></i>
 
-                Lista de Clientes
+                Lista de Timbrados
 
             </h5>
 
@@ -162,36 +180,37 @@
                 <table class="table table-hover align-middle">
 
 
-                    <thead>
-
-
-                    <tr>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Ruc</th>
-                    <th>Telefono</th>
-                    <th>Ciudad</th>
-                    <th>Email</th>
+                <tr>
+                    <th>N° Timbrado</th>
+                    <th>Cod. Establecimiento</th>
+                    <th>Expedicion</th>
+                    <th>Inicio Vigencia</th>
+                    <th>Fin Vigencia</th>
+                    <th>Desde</th>
+                    <th>Hasta</th>
+                    <th>Estado</th>
                     <th class="text-center">Acciones</th>
                 </tr>
                 </thead>
 
                 <tbody>
-                <tr th:each="clientes : ${clientes}">
-                    <td th:text="${clientes.nombre}"></td>
-                    <td th:text="${clientes.apellido}"></td>
-                    <td th:text="${clientes.ruc}"></td>
-                    <td th:text="${clientes.telefono}"></td>
-                    <td th:text="${clientes.ciudad.descripcion}"></td>
-                    <td th:text="${clientes.email}"></td>
+                <tr th:each="timbrado : ${timbrado}">
+                    <td th:text="${timbrado.nro_timbrado}"></td>
+                    <td th:text="${timbrado.cod_establecimiento}"></td>
+                    <td th:text="${timbrado.expedicion}"></td>
+                    <td th:text="${timbrado.inicio_vigencia}"></td>
+                    <td th:text="${timbrado.fin_vigencia}"></td>
+                    <td th:text="${timbrado.desde}"></td>
+                    <td th:text="${timbrado.hasta}"></td>
+                    <td th:text="${timbrado.estado}"></td>
                     <td class="text-center">
 
-                        <a th:href="@{/clientes/editar/{id}(id=${clientes.id})}"
+                        <a th:href="@{/timbrado/editar/{id}(id=${timbrado.id})}"
                            class="btn btn-sm btn-warning me-1">
                             <i class="bi bi-pencil-square"></i>
                         </a>
 
-                        <a th:href="@{/clientes/{id}(id=${clientes.id})}"
+                        <a th:href="@{/timbrado/{id}(id=${timbrado.id})}"
                            class="btn btn-sm btn-danger">
                             <i class="bi bi-trash"></i>
                         </a>

@@ -1,0 +1,1556 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>Facturas Pendientes | VETSHOP</title>
+
+
+    <!-- =====================================================
+         BOOTSWATCH
+         ===================================================== -->
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/pulse/bootstrap.min.css">
+
+
+    <!-- =====================================================
+         BOOTSTRAP ICONS
+         ===================================================== -->
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+    <style>
+
+        /* =====================================================
+           VARIABLES VETSHOP
+           ===================================================== */
+
+        :root {
+
+            --vet-purple: #593196;
+            --vet-purple-dark: #47277a;
+            --vet-purple-light: #f4eff9;
+
+            --vet-text: #343a40;
+            --vet-gray: #6c757d;
+
+            --white: #ffffff;
+        }
+
+
+        /* =====================================================
+           BODY
+           ===================================================== */
+
+        body {
+
+            background-color: #f7f5fa;
+
+            min-height: 100vh;
+
+            color: var(--vet-text);
+        }
+
+
+        /* =====================================================
+           NAVBAR
+           ===================================================== */
+
+        .navbar-custom {
+
+            background-color: white;
+
+            box-shadow:
+                0 3px 15px rgba(0, 0, 0, 0.10);
+
+            padding: 8px 0;
+        }
+
+
+        /* LOGO */
+
+        .logo-navbar {
+
+            height: 65px;
+
+            width: auto;
+
+            object-fit: contain;
+        }
+
+
+        /* TEXTO AL LADO DEL LOGO */
+
+        .system-name {
+
+            border-left: 1px solid #ddd;
+
+            margin-left: 15px;
+
+            padding-left: 15px;
+
+            color: var(--vet-purple);
+
+            font-weight: 600;
+
+            font-size: 0.95rem;
+        }
+
+
+        /* =====================================================
+           USUARIO
+           ===================================================== */
+
+        .user-info {
+
+            color: var(--vet-text);
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+        }
+
+
+        .user-info i {
+
+            color: var(--vet-purple);
+
+            font-size: 1.25rem;
+        }
+
+
+        /* =====================================================
+           BOTONES VETSHOP
+           ===================================================== */
+
+        .btn-vet {
+
+            background-color: var(--vet-purple);
+
+            border-color: var(--vet-purple);
+
+            color: white;
+
+            border-radius: 8px;
+
+            padding: 8px 18px;
+
+            font-weight: 500;
+
+            transition: all 0.2s ease;
+        }
+
+
+        .btn-vet:hover {
+
+            background-color: var(--vet-purple-dark);
+
+            border-color: var(--vet-purple-dark);
+
+            color: white;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* BOTÓN OUTLINE */
+
+        .btn-vet-outline {
+
+            color: var(--vet-purple);
+
+            border: 1px solid var(--vet-purple);
+
+            border-radius: 8px;
+
+            padding: 7px 15px;
+
+            background-color: white;
+        }
+
+
+        .btn-vet-outline:hover {
+
+            background-color: var(--vet-purple);
+
+            color: white;
+        }
+
+
+        /* =====================================================
+           CONTENEDOR PRINCIPAL
+           ===================================================== */
+
+        .main-container {
+
+            max-width: 1200px;
+
+            margin: 0 auto;
+
+            padding: 35px 20px;
+        }
+
+
+        /* =====================================================
+           ENCABEZADO
+           ===================================================== */
+
+        .page-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 25px;
+        }
+
+
+        .page-title {
+
+            color: var(--vet-purple);
+
+            font-weight: 700;
+
+            margin-bottom: 5px;
+        }
+
+
+        .page-title i {
+
+            margin-right: 8px;
+        }
+
+
+        .page-subtitle {
+
+            color: var(--vet-gray);
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           TARJETA
+           ===================================================== */
+
+        .invoice-card {
+
+            border: none;
+
+            border-radius: 16px;
+
+            background-color: white;
+
+            box-shadow:
+                0 5px 18px rgba(0, 0, 0, 0.08);
+
+            overflow: hidden;
+        }
+
+
+        /* =====================================================
+           HEADER TARJETA
+           ===================================================== */
+
+        .invoice-card-header {
+
+            background-color: var(--vet-purple);
+
+            color: white;
+
+            padding: 18px 22px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+        }
+
+
+        .invoice-card-header h5 {
+
+            margin: 0;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           TABLA
+           ===================================================== */
+
+        .table-container {
+
+            overflow-x: auto;
+        }
+
+
+        .table {
+
+            margin-bottom: 0;
+        }
+
+
+        .table thead th {
+
+            background-color: var(--vet-purple-light);
+
+            color: var(--vet-purple);
+
+            border-bottom: 2px solid #ddd;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+
+        .table tbody td {
+
+            vertical-align: middle;
+
+            padding: 13px 12px;
+        }
+
+
+        .table tbody tr {
+
+            transition: background-color 0.15s ease;
+        }
+
+
+        .table tbody tr:hover {
+
+            background-color: #faf8fc;
+        }
+
+
+        /* =====================================================
+           NÚMERO DE FACTURA
+           ===================================================== */
+
+        .invoice-number {
+
+            color: var(--vet-purple);
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           TOTAL
+           ===================================================== */
+
+        .invoice-total {
+
+            color: var(--vet-purple);
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           ESTADO
+           ===================================================== */
+
+        .estado-pendiente {
+
+            background-color: #fff3cd;
+
+            color: #856404;
+
+            padding: 5px 10px;
+
+            border-radius: 20px;
+
+            font-size: 0.85rem;
+
+            font-weight: 600;
+
+            display: inline-block;
+        }
+
+
+        /* =====================================================
+           BOTONES DE ACCIONES
+           ===================================================== */
+
+        .btn-action {
+
+            width: 36px;
+
+            height: 36px;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 8px;
+
+            border: none;
+
+            transition: all 0.2s ease;
+        }
+
+
+        /* REGISTRAR PAGO */
+
+        .btn-pago {
+
+            background-color: #d1e7dd;
+
+            color: #146c43;
+        }
+
+
+        .btn-pago:hover {
+
+            background-color: #198754;
+
+            color: white;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* ELIMINAR */
+
+        .btn-delete {
+
+            background-color: #f8d7da;
+
+            color: #842029;
+        }
+
+
+        .btn-delete:hover {
+
+            background-color: #dc3545;
+
+            color: white;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+
+        footer {
+
+            text-align: center;
+
+            color: var(--vet-gray);
+
+            font-size: 0.85rem;
+
+            padding: 20px;
+
+            margin-top: 10px;
+        }
+
+
+        footer strong {
+
+            color: var(--vet-purple);
+        }
+
+
+        /* =====================================================
+           MODAL DE PAGOS
+           ===================================================== */
+
+        .modal-pago {
+
+            border: none;
+
+            border-radius: 12px;
+
+            overflow: hidden;
+        }
+
+
+        .modal-header {
+
+            background-color: var(--vet-purple);
+
+            color: white;
+        }
+
+
+        .modal-title {
+
+            font-weight: 600;
+        }
+
+
+        .modal-header .btn-close {
+
+            filter: brightness(0) invert(1);
+        }
+
+
+        .modal-footer {
+
+            border-top: 1px solid #ddd;
+        }
+
+
+        /* =====================================================
+           RESUMEN DE PAGO
+           ===================================================== */
+
+        .pago-resumen {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 5px 0;
+        }
+
+
+        .pago-resumen-item {
+
+            flex: 1;
+
+            background-color: var(--vet-purple-light);
+
+            border: 1px solid #ddd;
+
+            border-radius: 8px;
+
+            padding: 12px;
+
+            text-align: center;
+        }
+
+
+        .pago-resumen-label {
+
+            display: block;
+
+            color: #666;
+
+            font-size: 13px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .pago-resumen-item strong {
+
+            display: block;
+
+            color: var(--vet-purple);
+
+            font-size: 20px;
+        }
+
+
+        /* =====================================================
+           NUEVO PAGO
+           ===================================================== */
+
+        .pago-nuevo {
+
+            border: 1px solid #ddd;
+
+            border-radius: 10px;
+
+            padding: 15px;
+
+            background-color: #fff;
+        }
+
+
+        .pago-nuevo-header {
+
+            color: var(--vet-purple);
+
+            font-weight: bold;
+
+            margin-bottom: 15px;
+        }
+
+
+        .pago-nuevo-header i {
+
+            margin-right: 5px;
+        }
+
+
+        /* =====================================================
+           INPUTS
+           ===================================================== */
+
+        .form-control,
+        .form-select {
+
+            border-radius: 8px;
+
+            padding: 10px 12px;
+        }
+
+
+        .form-control:focus,
+        .form-select:focus {
+
+            border-color: var(--vet-purple);
+
+            box-shadow:
+                0 0 0 0.20rem rgba(89, 49, 150, 0.15);
+        }
+
+
+        .form-label {
+
+            color: var(--vet-text);
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           BOTÓN AGREGAR PAGO
+           ===================================================== */
+
+        .btn-agregar-pago {
+
+            width: 100%;
+
+            height: 42px;
+
+            padding: 0;
+
+            font-size: 18px;
+
+            background-color: var(--vet-purple);
+
+            color: white;
+
+            border: none;
+
+            border-radius: 8px;
+        }
+
+
+        .btn-agregar-pago:hover {
+
+            background-color: var(--vet-purple-dark);
+
+            color: white;
+        }
+
+
+        /* =====================================================
+           TABLA DE PAGOS
+           ===================================================== */
+
+        .tabla-pagos {
+
+            margin-bottom: 0;
+        }
+
+
+        .tabla-pagos thead th {
+
+            background-color: var(--vet-purple);
+
+            color: white;
+
+            vertical-align: middle;
+        }
+
+
+        .tabla-pagos tbody td {
+
+            vertical-align: middle;
+        }
+
+
+        /* =====================================================
+           ELIMINAR PAGO
+           ===================================================== */
+
+        .btn-eliminar-pago {
+
+            border: none;
+
+            background: transparent;
+
+            color: #dc3545;
+
+            font-size: 17px;
+        }
+
+
+        .btn-eliminar-pago:hover {
+
+            color: #a71d2a;
+        }
+
+
+        /* =====================================================
+           SALDO
+           ===================================================== */
+
+        .modal-total {
+
+            background-color: var(--vet-purple-light);
+
+            border-radius: 8px;
+
+            padding: 12px;
+
+            text-align: right;
+
+            margin-top: 15px;
+        }
+
+
+        .modal-total strong {
+
+            color: var(--vet-purple);
+
+            font-size: 20px;
+        }
+
+
+        .pago-saldo-cero {
+
+            color: #198754 !important;
+        }
+
+
+        .pago-saldo-negativo {
+
+            color: #dc3545 !important;
+        }
+
+
+        /* =====================================================
+           BOTÓN MORADO MODAL
+           ===================================================== */
+
+        .btn-morado {
+
+            background-color: var(--vet-purple);
+
+            color: white;
+
+            border: none;
+
+            border-radius: 8px;
+        }
+
+
+        .btn-morado:hover {
+
+            background-color: var(--vet-purple-dark);
+
+            color: white;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+           ===================================================== */
+
+        @media (max-width: 768px) {
+
+            .logo-navbar {
+
+                height: 55px;
+            }
+
+
+            .system-name {
+
+                display: none;
+            }
+
+
+            .user-info span {
+
+                display: none;
+            }
+
+
+            .main-container {
+
+                padding: 25px 15px;
+            }
+
+
+            .page-header {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+
+            .pago-resumen {
+
+                flex-direction: column;
+            }
+
+
+            .pago-resumen-item {
+
+                width: 100%;
+            }
+
+        }
+
+
+        @media (max-width: 576px) {
+
+            .user-info {
+
+                gap: 4px;
+            }
+
+
+            .btn-vet-outline {
+
+                padding: 6px 9px;
+            }
+
+
+            .btn-vet-outline span {
+
+                display: none;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+     ===================================================== -->
+
+<nav class="navbar navbar-custom">
+
+    <div class="container-fluid px-4">
+
+
+        <!-- LOGO -->
+
+        <a class="navbar-brand d-flex align-items-center"
+           th:href="@{/menu}">
+
+            <img src="/img/loogo.PNG"
+                 alt="VETSHOP - Dra. Sheila Sánchez"
+                 class="logo-navbar">
+
+
+            <span class="system-name">
+
+                Gestión Veterinaria
+
+            </span>
+
+        </a>
+
+
+        <!-- USUARIO -->
+
+        <div class="user-info">
+
+            <i class="bi bi-person-circle"></i>
+
+            <span>Administrador</span>
+
+
+            <!-- MENÚ -->
+
+            <a th:href="@{/menu}"
+               class="btn btn-sm btn-vet-outline ms-2">
+
+                <i class="bi bi-house"></i>
+
+                <span>Menú</span>
+
+            </a>
+
+
+            <!-- SALIR -->
+
+            <a th:href="@{/logout}"
+               class="btn btn-sm btn-vet-outline">
+
+                <i class="bi bi-box-arrow-right"></i>
+
+                <span>Salir</span>
+
+            </a>
+
+        </div>
+
+    </div>
+</nav>
+<main class="main-container">
+
+    <div class="page-header">
+
+
+        <div>
+
+            <h2 class="page-title">
+
+                <i class="bi bi-receipt"></i>
+
+                Facturas Pendientes
+
+            </h2>
+
+
+            <p class="page-subtitle">
+
+                Consulta y registra los pagos de las facturas
+                pendientes de VETSHOP.
+
+            </p>
+
+
+        </div>
+
+        <a th:href="@{/admin_facturas}"
+           class="btn btn-vet">
+
+            <i class="bi bi-plus-circle"></i>
+
+            Administrador de Fact.
+
+        </a>
+
+    </div>
+
+
+    <!-- =================================================
+         TARJETA
+         ================================================= -->
+
+    <div class="card invoice-card">
+
+
+        <!-- HEADER -->
+
+        <div class="invoice-card-header">
+
+            <h5>
+
+                <i class="bi bi-list-ul"></i>
+
+                Lista de Facturas Pendientes
+
+            </h5>
+
+
+            <span>
+
+                <i class="bi bi-receipt"></i>
+
+            </span>
+
+        </div>
+
+
+        <!-- BODY -->
+
+        <div class="card-body p-0">
+
+
+            <!-- =================================================
+                 TABLA
+                 ================================================= -->
+
+            <div class="table-container">
+
+                <table class="table table-hover align-middle">
+
+
+                    <thead>
+
+                    <tr>
+
+                        <th>
+                            Nro Factura
+                        </th>
+
+                        <th>
+                            Cliente
+                        </th>
+
+                        <th>
+                            Estado
+                        </th>
+
+                        <th>
+                            Total
+                        </th>
+
+                        <th class="text-center">
+                            Acciones
+                        </th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                    <tr th:each="factura : ${facturasPendientes}">
+
+
+                        <!-- NRO FACTURA -->
+
+                        <td class="invoice-number">
+
+                            <span th:text="${factura.nro_factura}">
+                            </span>
+
+                        </td>
+
+
+                        <!-- CLIENTE -->
+
+                        <td>
+
+                            <strong
+                                    th:text="${factura.cliente.nombre} + ' ' + ${factura.cliente.apellido}">
+                            </strong>
+
+                        </td>
+
+
+                        <!-- ESTADO -->
+
+                        <td>
+
+                            <span class="estado-pendiente"
+                                  th:text="${factura.estado}">
+                            </span>
+
+                        </td>
+
+
+                        <!-- TOTAL -->
+
+                        <td class="invoice-total">
+
+                            <span th:text="${factura.total}">
+                            </span>
+
+                        </td>
+
+
+                        <!-- ACCIONES -->
+
+                        <td class="text-center">
+
+
+                            <!-- REGISTRAR PAGO -->
+
+                            <button type="button"
+                                    class="btn btn-action btn-pago me-1"
+                                    th:attr="data-id=${factura.id}"
+                                    onclick="abrirModalPago(this)"
+                                    title="Registrar pago">
+
+                                <i class="bi bi-cash-coin"></i>
+
+                            </button>
+
+
+                            <form th:action="@{/facturas/{id}/anular(id=${factura.id})}"
+                                  method="post"
+                                  style="display: inline;">
+
+                                <button type="submit"
+                                        class="btn btn-action btn-delete"
+                                        title="Anular factura">
+
+                                    <i class="bi bi-trash"></i>
+
+                                </button>
+
+                            </form>
+
+                        </td>
+
+
+                    </tr>
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</main>
+
+
+<!-- =====================================================
+     MODAL REGISTRAR PAGO
+     ===================================================== -->
+
+<div class="modal fade"
+     id="modalPago"
+     tabindex="-1"
+     aria-labelledby="modalPagoLabel"
+     aria-hidden="true">
+
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+
+        <div class="modal-content modal-pago">
+
+
+            <!-- =================================================
+                 HEADER
+                 ================================================= -->
+
+            <div class="modal-header">
+
+
+                <h5 class="modal-title"
+                    id="modalPagoLabel">
+
+                    <i class="bi bi-cash-coin"></i>
+
+                    Registrar Pago
+
+                    <span class="ms-2"
+                          id="fechaActual">
+                    </span>
+
+                </h5>
+
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Cerrar">
+
+                </button>
+
+            </div>
+
+
+            <!-- =================================================
+                 BODY
+                 ================================================= -->
+
+            <div class="modal-body">
+
+
+                <!-- =================================================
+                     RESUMEN
+                     ================================================= -->
+
+                <div class="pago-resumen">
+
+
+                    <!-- TOTAL -->
+
+                    <div class="pago-resumen-item">
+
+
+                        <input type="hidden"
+                               id="facturaIdPago"
+                               name="facturaId">
+
+
+                        <span class="pago-resumen-label">
+
+                            Total a Pagar
+
+                        </span>
+
+
+                        <strong id="totalPagar">
+
+                            Gs. 0
+
+                        </strong>
+
+                    </div>
+
+
+                    <!-- PAGADO -->
+
+                    <div class="pago-resumen-item">
+
+
+                        <span class="pago-resumen-label">
+
+                            Total Pagado
+
+                        </span>
+
+
+                        <strong id="pagoPagado">
+
+                            Gs. 0
+
+                        </strong>
+
+                    </div>
+
+
+                    <!-- SALDO -->
+
+                    <div class="pago-resumen-item">
+
+
+                        <span class="pago-resumen-label">
+
+                            Saldo
+
+                        </span>
+
+
+                        <strong id="pagoSaldo">
+
+                            Gs. 0
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <hr>
+
+
+                <!-- =================================================
+                     AGREGAR PAGO
+                     ================================================= -->
+
+                <div class="pago-nuevo">
+
+
+                    <div class="pago-nuevo-header">
+
+                        <i class="bi bi-plus-circle"></i>
+
+                        Agregar pago
+
+                    </div>
+
+
+                    <div class="row g-3 align-items-end">
+
+
+                        <!-- MÉTODO -->
+
+                        <div class="col-md-4">
+
+
+                            <label for="metodoPago"
+                                   class="form-label">
+
+                                Método de Pago
+
+                            </label>
+
+
+                            <select class="form-select"
+                                    id="metodoPago">
+
+                                <option value="">
+                                    -- Seleccione --
+                                </option>
+
+
+                                <option th:each="tipo_pago : ${tipo_pago}"
+                                        th:value="${tipo_pago.id_tipo_pago}"
+                                        th:text="${tipo_pago.descripcion}">
+
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- MONTO -->
+
+                        <div class="col-md-3">
+
+
+                            <label for="montoPago"
+                                   class="form-label">
+
+                                Monto
+
+                            </label>
+
+
+                            <input type="number"
+                                   id="montoPago"
+                                   class="form-control"
+                                   min="1"
+                                   step="1"
+                                   placeholder="0">
+
+                        </div>
+
+
+                        <!-- DETALLE -->
+
+                        <div class="col-md-4">
+
+
+                            <label for="detallePago"
+                                   class="form-label">
+
+                                Detalle
+
+                            </label>
+
+
+                            <input type="text"
+                                   id="detallePago"
+                                   class="form-control"
+                                   placeholder="N° operación, banco, etc.">
+
+                        </div>
+
+
+                        <!-- BOTÓN + -->
+
+                        <div class="col-md-1">
+
+
+                            <button type="button"
+                                    class="btn btn-agregar-pago"
+                                    id="btnAgregarPago"
+                                    title="Agregar pago">
+
+                                <i class="bi bi-plus-lg"></i>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     MENSAJE DE ERROR
+                     ================================================= -->
+
+                <div id="mensajePago"
+                     class="alert alert-danger mt-3 d-none">
+
+                </div>
+
+
+                <!-- =================================================
+                     TABLA DE PAGOS
+                     ================================================= -->
+
+                <div class="table-responsive mt-4">
+
+
+                    <table class="table table-bordered table-hover tabla-pagos">
+
+
+                        <thead>
+
+                        <tr>
+
+                            <th>
+                                Método de Pago
+                            </th>
+
+                            <th>
+                                Detalles
+                            </th>
+
+                            <th class="text-end">
+                                Monto
+                            </th>
+
+                            <th class="text-center"
+                                style="width: 80px;">
+
+                                <i class="bi bi-trash"></i>
+
+                            </th>
+
+                        </tr>
+
+                        </thead>
+
+
+                        <tbody id="pagosBody">
+
+
+                        <tr id="sinPagos">
+
+
+                            <td colspan="4"
+                                class="text-center text-muted py-4">
+
+
+                                <i class="bi bi-cash-stack fs-3"></i>
+
+
+                                <br>
+
+
+                                No se encontraron pagos
+
+
+                            </td>
+
+                        </tr>
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- =================================================
+                     SALDO PENDIENTE
+                     ================================================= -->
+
+                <div class="modal-total">
+
+
+                    Saldo pendiente:
+
+
+                    <strong id="saldoPendiente">
+
+                        Gs. 0
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 FOOTER
+                 ================================================= -->
+
+            <div class="modal-footer">
+
+
+                <button type="button"
+                        class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal">
+
+                    <i class="bi bi-x-circle"></i>
+
+                    Cerrar
+
+                </button>
+
+
+                <button type="button"
+                        class="btn btn-morado"
+                        id="btnGuardarPago">
+
+                    <i class="bi bi-check-circle"></i>
+
+                    Confirmar Pago
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer>
+
+    <strong>VETSHOP</strong>
+
+    · Dra. Sheila Sánchez
+
+    · Gestión Veterinaria
+
+    &copy; 2026
+
+</footer>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
+
+<script th:src="@{/js/pago.js}" defer></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+</script>
+
+
+</body>
+
+</html>
+
+

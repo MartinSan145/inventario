@@ -1,0 +1,457 @@
+```html
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Ticket - VETSHOP</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #eeeeee;
+            font-family: "Courier New", Courier, monospace;
+            color: #000;
+            font-size: 12px;
+        }
+
+        .ticket {
+            width: 80mm;
+            min-height: 100mm;
+            margin: 20px auto;
+            padding: 5mm 4mm;
+            background: white;
+        }
+
+        /* ENCABEZADO */
+
+        .empresa {
+            text-align: center;
+        }
+
+        .logo {
+            width: 45mm;
+            max-height: 25mm;
+            object-fit: contain;
+            margin-bottom: 3px;
+        }
+
+        .empresa h1 {
+            margin: 2px 0;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .empresa p {
+            margin: 2px 0;
+            font-size: 11px;
+        }
+
+        .titulo {
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* LINEAS */
+
+        .linea {
+            border-top: 1px dashed #000;
+            margin: 7px 0;
+        }
+
+        /* DATOS */
+
+        .datos {
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .dato {
+            display: flex;
+        }
+
+        .dato .label {
+            font-weight: bold;
+            width: 30%;
+        }
+
+        .dato .valor {
+            width: 70%;
+        }
+
+        /* TABLA */
+
+        .detalle {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+            font-size: 10px;
+        }
+
+        .detalle th {
+            border-bottom: 1px dashed #000;
+            padding: 4px 1px;
+            text-align: left;
+        }
+
+        .detalle td {
+            padding: 4px 1px;
+            vertical-align: top;
+        }
+
+        .cantidad {
+            width: 12%;
+            text-align: center;
+        }
+
+        .descripcion {
+            width: 48%;
+        }
+
+        .precio {
+            width: 20%;
+            text-align: right;
+        }
+
+        .subtotal {
+            width: 20%;
+            text-align: right;
+        }
+
+        /* TOTAL */
+
+        .total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 15px;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        /* PIE */
+
+        .gracias {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .gracias strong {
+            font-size: 13px;
+        }
+
+        /* BOTONES */
+
+        .acciones {
+            width: 80mm;
+            margin: 15px auto;
+            text-align: center;
+        }
+
+        .btn {
+            border: none;
+            padding: 8px 15px;
+            margin: 3px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .btn-imprimir {
+            background: #593196;
+            color: white;
+        }
+
+        .btn-cerrar {
+            background: #6c757d;
+            color: white;
+        }
+
+        /* IMPRESIÓN */
+
+        @media print {
+
+            @page {
+                size: 80mm auto;
+                margin: 0;
+            }
+
+            html,
+            body {
+                width: 80mm;
+                margin: 0;
+                padding: 0;
+                background: white;
+            }
+
+            .ticket {
+                width: 80mm;
+                margin: 0;
+                padding: 4mm;
+            }
+
+            .acciones {
+                display: none;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="ticket">
+
+    <!-- ENCABEZADO -->
+
+    <div class="empresa">
+
+        <img src="/img/loogo.PNG"
+             class="logo"
+             alt="VETSHOP">
+
+        <h1>VETSHOP</h1>
+
+        <p>Gestión Veterinaria</p>
+
+        <p>Dra. Sheila Sánchez</p>
+
+        <div class="titulo">
+            TICKET DE VENTA
+        </div>
+
+    </div>
+
+
+    <div class="linea"></div>
+
+
+    <!-- DATOS DE LA FACTURA -->
+
+    <div class="datos">
+
+        <div class="dato">
+            <span class="label">Factura:</span>
+
+            <span class="valor"
+                  th:text="${factura.nro_factura}">
+                001-001-0000001
+            </span>
+        </div>
+
+
+        <div class="dato">
+
+            <span class="label">Fecha:</span>
+
+            <span class="valor"
+                  th:text="${#temporals.format(factura.fecha, 'dd/MM/yyyy HH:mm')}">
+                11/09/2026 15:30
+            </span>
+
+        </div>
+
+
+        <div class="dato">
+
+            <span class="label">Estado:</span>
+
+            <span class="valor"
+                  th:text="${factura.estado}">
+                EMITIDO
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="linea"></div>
+
+
+    <!-- CLIENTE -->
+
+    <div class="datos">
+
+        <div class="dato">
+
+            <span class="label">Cliente:</span>
+
+            <span class="valor"
+                  th:text="${factura.cliente.nombre + ' ' + factura.cliente.apellido}">
+                Cliente
+            </span>
+
+        </div>
+
+
+        <div class="dato">
+
+            <span class="label">RUC:</span>
+
+            <span class="valor"
+                  th:text="${factura.cliente.ruc}">
+                0000000
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="linea"></div>
+
+
+    <!-- DETALLE -->
+
+    <table class="detalle">
+
+        <thead>
+
+        <tr>
+
+            <th class="cantidad">
+                C.
+            </th>
+
+            <th class="descripcion">
+                DESCRIPCIÓN
+            </th>
+
+            <th class="precio">
+                P.UNIT.
+            </th>
+
+            <th class="subtotal">
+                TOTAL
+            </th>
+
+        </tr>
+
+        </thead>
+
+
+        <tbody>
+
+        <tr th:each="detalle : ${factura.detalle_facturas}">
+
+            <td class="cantidad"
+                th:text="${detalle.cantidad}">
+                1
+            </td>
+
+            <td class="descripcion"
+                th:text="${detalle.producto.descripcion}">
+                Producto
+            </td>
+
+            <td class="precio"
+                th:text="${#numbers.formatDecimal(detalle.precio_unitario, 0, 'POINT', 0, 'COMMA')}">
+                10.000
+            </td>
+
+            <td class="subtotal"
+                th:text="${#numbers.formatDecimal(detalle.subtotal, 0, 'POINT', 0, 'COMMA')}">
+                10.000
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+
+    <div class="linea"></div>
+
+
+    <!-- TOTAL -->
+
+    <div class="total">
+
+        <span>TOTAL:</span>
+
+        <span>
+            Gs.
+            <span th:text="${#numbers.formatInteger(factura.total, 0, 'POINT')}">
+                10.000
+            </span>
+        </span>
+
+    </div>
+
+
+    <div class="linea"></div>
+
+
+    <!-- PIE -->
+
+    <div class="gracias">
+
+        <strong>¡Gracias por su compra!</strong>
+
+        <br>
+
+        Gracias por confiar en VETSHOP.
+
+        <br>
+
+        <br>
+
+        Conserve este comprobante.
+
+    </div>
+
+</div>
+
+
+<!-- BOTONES -->
+
+<div class="acciones">
+
+    <button class="btn btn-imprimir"
+            onclick="window.print()">
+
+        🖨 Imprimir
+
+    </button>
+
+
+    <button class="btn btn-cerrar"
+            onclick="window.close()">
+
+        ✕ Cerrar
+
+    </button>
+
+</div>
+
+
+<script>
+
+    window.addEventListener("load", function () {
+
+        window.print();
+
+    });
+
+</script>
+
+
+</body>
+
+</html>
+```

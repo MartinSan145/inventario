@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Nueva Factura</title>
+
+
+    <!-- BOOTSWATCH -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/pulse/bootstrap.min.css">
+
+
+    <!-- BOOTSTRAP ICONS -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+
+    <style>
+
+        body {
+            background-color: #f4f6f9;
+        }
+
+
+        /* =========================
+           TARJETA PRINCIPAL
+        ========================= */
+
+        .factura-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,.15);
+            overflow: hidden;
+        }
+
+
+        /* =========================
+           CABECERA
+        ========================= */
+
+        .factura-header {
+            background-color: #593196;
+            color: white;
+            padding: 18px 25px;
+        }
+
+
+        .factura-header h4 {
+            margin: 0;
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           SECCIONES
+        ========================= */
+
+        .seccion {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background: white;
+        }
+
+
+        .seccion-header {
+            background-color: #f1eef8;
+            color: #593196;
+            font-weight: bold;
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+
+        .seccion-body {
+            padding: 20px;
+        }
+
+
+        /* =========================
+           TABLA
+        ========================= */
+
+        .table thead th {
+            background-color: #593196;
+            color: white;
+            vertical-align: middle;
+        }
+
+
+        .table tbody td {
+            vertical-align: middle;
+        }
+
+
+        /* =========================
+           TOTAL
+        ========================= */
+
+        .total-box {
+            background-color: #f1eef8;
+            border: 1px solid #593196;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+
+        .total-label {
+            font-size: 17px;
+            font-weight: bold;
+            color: #593196;
+        }
+
+
+        .total-value {
+            font-size: 30px;
+            font-weight: bold;
+            color: #593196;
+        }
+
+
+        /* =========================
+           BOTÓN MORADO
+        ========================= */
+
+        .btn-morado {
+            background-color: #593196;
+            color: white;
+            border: none;
+        }
+
+
+        .btn-morado:hover {
+            background-color: #452477;
+            color: white;
+        }
+
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal-header {
+            background-color: #593196;
+            color: white;
+        }
+
+
+        .modal-title {
+            font-weight: bold;
+        }
+
+
+        .modal-header .btn-close {
+            filter: brightness(0) invert(1);
+        }
+
+
+        .modal-footer {
+            border-top: 1px solid #ddd;
+        }
+
+
+        .campo-modal {
+            margin-bottom: 15px;
+        }
+
+
+        .campo-modal label {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+
+        /* =========================
+           TOTAL DEL MODAL
+        ========================= */
+
+        .modal-total {
+            background-color: #f1eef8;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: right;
+            margin-top: 15px;
+        }
+
+
+        .modal-total strong {
+            color: #593196;
+            font-size: 20px;
+        }
+
+
+        /* =========================================================
+           MODAL DE PAGOS
+        ========================================================= */
+
+        .modal-pago {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+
+        /* =========================
+           RESUMEN DE PAGO
+        ========================= */
+
+        .pago-resumen {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 5px 0;
+        }
+
+
+        .pago-resumen-item {
+            flex: 1;
+            background-color: #f1eef8;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+
+        .pago-resumen-label {
+            display: block;
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+
+        .pago-resumen-item strong {
+            display: block;
+            color: #593196;
+            font-size: 20px;
+        }
+
+
+        /* =========================
+           NUEVO PAGO
+        ========================= */
+
+        .pago-nuevo {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            background-color: #fff;
+        }
+
+
+        .pago-nuevo-header {
+            color: #593196;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+
+        .pago-nuevo-header i {
+            margin-right: 5px;
+        }
+
+
+        /* =========================
+           BOTÓN AGREGAR PAGO
+        ========================= */
+
+        .btn-agregar-pago {
+            width: 100%;
+            height: 38px;
+            padding: 0;
+            font-size: 18px;
+        }
+
+
+        /* =========================
+           TABLA DE PAGOS
+        ========================= */
+
+        .tabla-pagos {
+            margin-bottom: 0;
+        }
+
+
+        .tabla-pagos thead th {
+            background-color: #593196;
+            color: white;
+            vertical-align: middle;
+        }
+
+
+        .tabla-pagos tbody td {
+            vertical-align: middle;
+        }
+
+
+        /* =========================
+           BOTÓN ELIMINAR PAGO
+        ========================= */
+
+        .btn-eliminar-pago {
+            border: none;
+            background: transparent;
+            color: #dc3545;
+            font-size: 17px;
+        }
+
+
+        .btn-eliminar-pago:hover {
+            color: #a71d2a;
+        }
+
+
+        /* =========================
+           SALDO
+        ========================= */
+
+        .pago-saldo-cero {
+            color: #198754 !important;
+        }
+
+
+        .pago-saldo-negativo {
+            color: #dc3545 !important;
+        }
+
+
+        /* =========================
+           RESPONSIVE MODAL PAGO
+        ========================= */
+
+        @media (max-width: 768px) {
+
+            .pago-resumen {
+                flex-direction: column;
+            }
+
+            .pago-resumen-item {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container-fluid p-0">
+
+
+    <!-- ========================================================= -->
+    <!-- CONTENIDO PRINCIPAL
+    ========================================================== -->
+
+    <div class="card factura-card">
+
+
+        <!-- CABECERA DE LA FACTURA -->
+
+        <div class="factura-header">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+
+                <h4 class="mb-0">
+
+                    <i class="bi bi-receipt"></i>
+
+                    Nueva Factura
+
+                </h4>
+
+
+                <!-- FECHA -->
+
+                <div>
+
+                    <label class="form-label fw-bold">
+
+                        Fecha
+
+                        <span th:text="${fecha}"></span>
+
+                    </label>
+
+                </div>
+
+
+                <!-- BOTONES DERECHA -->
+
+                <div class="d-flex gap-3">
+
+                    <a th:href="@{/facturas}"
+                       class="text-white text-decoration-none">
+
+                        <i class="bi bi-receipt"></i>
+
+                        Cobrar Facturas
+
+                    </a>
+
+
+                    <a th:href="@{/login}"
+                       class="text-white text-decoration-none">
+
+                        <i class="bi bi-box-arrow-right"></i>
+
+                        Salir
+
+                    </a>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================================================= -->
+        <!-- BODY FACTURA
+        ========================================================== -->
+
+        <div class="card-body p-4">
+
+
+            <form th:action="@{/factura_venta}"
+                  method="post"
+                  th:object="${factura}">
+
+
+                <!-- ================================================= -->
+                <!-- DATOS OCULTOS DE DETALLES
+                ================================================== -->
+
+                <div id="detallesHidden"></div>
+
+
+                <!-- ================================================= -->
+                <!-- DATOS DE FACTURA
+                ================================================== -->
+
+                <div class="seccion">
+
+
+                    <div class="seccion-header">
+
+                        <i class="bi bi-file-earmark-text"></i>
+
+                        Datos de la Factura
+
+                    </div>
+
+
+                    <div class="seccion-body">
+
+
+                        <div class="row g-3">
+
+
+                            <!-- NÚMERO -->
+
+                            <div class="col-md-3">
+
+                                <label class="form-label fw-bold">
+
+                                    N° Factura
+
+                                </label>
+
+
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{nro_factura}"
+                                       placeholder="Se generá automáticamente"
+                                       readonly>
+
+                            </div>
+
+
+                            <!-- TIMBRADO -->
+
+                            <div class="col-md-3">
+
+                                <label class="form-label fw-bold">
+
+                                    Timbrado
+
+                                </label>
+
+
+                                <select class="form-select"
+                                        name="timbrado"
+                                        required>
+
+                                    <option value="">
+
+                                        Seleccione el timbrado
+
+                                    </option>
+
+
+                                    <option th:each="c : ${timbrado}"
+                                            th:value="${c.id}"
+                                            th:text="${c.cod_establecimiento + '-' + c.expedicion + ' | Timbrado: ' + c.nro_timbrado}">
+
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- CONDICIÓN -->
+
+                            <div class="col-md-3">
+
+                                <label class="form-label fw-bold">
+
+                                    Condición
+
+                                </label>
+
+
+                                <select class="form-select"
+                                        name="condicion">
+
+                                    <option value="CONTADO">
+
+                                        Contado
+
+                                    </option>
+
+
+                                    <option value="CREDITO">
+
+                                        Crédito
+
+                                    </option>
+
+                                </select>
+
+                            </div>
+                            <div class="col-md-3">
+
+                                <label class="form-label fw-bold">
+
+                                    Estado
+
+                                </label>
+
+
+                                <select class="form-select"
+                                        name="estado">
+
+                                    <option value="EMITIDO">
+
+                                        Emitido
+
+                                    </option>
+
+
+                                </select>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- DATOS DEL CLIENTE
+                ================================================== -->
+
+                <div class="seccion">
+
+
+                    <div class="seccion-header">
+
+                        <i class="bi bi-person"></i>
+
+                        Datos del Cliente
+
+                    </div>
+
+
+                    <div class="seccion-body">
+
+
+                        <div class="row g-3">
+
+
+                            <!-- CLIENTE -->
+
+                            <div class="col-md-6">
+
+                                <label class="form-label fw-bold">
+
+                                    Cliente / Razón Social
+
+                                </label>
+
+
+                                <select class="form-select"
+                                        name="cliente"
+                                        id="cliente"
+                                        onchange="obtenerDatosCliente(this);"
+                                        required>
+
+
+                                    <option value="">
+
+                                        -- Seleccione un cliente --
+
+                                    </option>
+
+
+                                    <option th:each="c : ${cliente}"
+                                            th:value="${c.id}"
+                                            th:text="${c.nombre + ' ' + c.apellido}">
+
+                                    </option>
+
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- RUC -->
+
+                            <div class="col-md-3">
+
+                                <label class="form-label fw-bold">
+
+                                    CI / RUC
+
+                                </label>
+
+
+                                <input type="text"
+                                       id="rucCliente"
+                                       class="form-control"
+                                       placeholder="CI / RUC"
+                                       readonly>
+
+                            </div>
+
+
+                            <!-- TELÉFONO -->
+
+                            <div class="col-md-3">
+
+                                <label class="form-label fw-bold">
+
+                                    Teléfono
+
+                                </label>
+
+
+                                <input type="text"
+                                       id="telefonoCliente"
+                                       class="form-control"
+                                       placeholder="Teléfono">
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- DETALLE DE MERCADERÍAS
+                ================================================== -->
+
+                <div class="seccion">
+
+
+                    <div class="seccion-header">
+
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+
+                            <span>
+
+                                <i class="bi bi-cart3"></i>
+
+                                Detalles de Productos
+
+                            </span>
+
+
+                            <!-- BOTÓN AGREGAR PRODUCTO -->
+
+                            <button type="button"
+                                    class="btn btn-morado btn-sm"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalProducto">
+
+
+                                <i class="bi bi-plus-circle"></i>
+
+                                Agregar producto
+
+
+                            </button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="seccion-body">
+
+
+                        <div class="table-responsive">
+
+
+                            <table class="table table-bordered table-hover">
+
+
+                                <thead>
+
+                                <tr>
+
+                                    <th>
+
+                                        Código
+
+                                    </th>
+
+
+                                    <th>
+
+                                        Producto
+
+                                    </th>
+
+
+                                    <th class="text-center">
+
+                                        Cant.
+
+                                    </th>
+
+
+                                    <th class="text-end">
+
+                                        Precio Unit.
+
+                                    </th>
+
+
+                                    <th class="text-center">
+
+                                        Desc. %
+
+                                    </th>
+
+
+                                    <th class="text-end">
+
+                                        Descuento
+
+                                    </th>
+
+
+                                    <th class="text-end">
+
+                                        Total
+
+                                    </th>
+
+
+                                    <th class="text-center">
+
+                                        <i class="bi bi-trash"></i>
+
+                                    </th>
+
+                                </tr>
+
+                                </thead>
+
+
+                                <tbody id="detalleBody">
+
+
+                                <tr id="filaVacia">
+
+                                    <td colspan="8"
+                                        class="text-center text-muted py-4">
+
+
+                                        <i class="bi bi-cart-x fs-3"></i>
+
+                                        <br>
+
+                                        No se encontraron registros
+
+
+                                    </td>
+
+                                </tr>
+
+
+                                </tbody>
+
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- TOTALES
+                ================================================== -->
+
+                <div class="row justify-content-end">
+
+
+                    <div class="col-md-4">
+
+
+                        <div class="total-box">
+
+
+                            <div class="d-flex justify-content-between mb-2">
+
+
+                                <span>
+
+                                    Subtotal:
+
+                                </span>
+
+
+                                <strong id="subtotalFactura">
+
+                                    Gs. 0
+
+                                </strong>
+
+
+                            </div>
+
+
+                            <div class="d-flex justify-content-between mb-3">
+
+
+                                <span>
+
+                                    Descuento:
+
+                                </span>
+
+
+                                <strong id="descuentoFactura">
+
+                                    Gs. 0
+
+                                </strong>
+
+
+                            </div>
+
+
+                            <hr>
+                            <input type="hidden" name="total" id="totalFacturaHidden">
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+
+                                <span class="total-label">
+
+                                    TOTAL A PAGAR
+
+                                </span>
+
+
+                                <span class="total-value"
+                                      id="totalFactura">
+
+                                    Gs. 0
+
+                                </span>
+
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- BOTONES
+                ================================================== -->
+
+                <div class="mt-4 text-end">
+
+
+                    <a href="/factura_venta"
+                       class="btn btn-outline-secondary">
+
+                        <i class="bi bi-x-circle"></i>
+
+                        Cancelar
+
+                    </a>
+
+
+                    <!-- BOTÓN REGISTRAR PAGO -->
+
+                    <button type="button"
+                            class="btn btn-outline-success ms-2"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalPago">
+
+                        <i class="bi bi-cash-coin"></i>
+
+                        Registrar Pago
+
+                    </button>
+
+
+                    <!-- GUARDAR FACTURA -->
+
+                    <button type="submit"
+                            class="btn btn-morado ms-2">
+
+                        <i class="bi bi-save"></i>
+
+                        Guardar Factura
+
+                    </button>
+
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- PAGOS ENVIADOS AL BACKEND
+                ================================================== -->
+
+                <input type="hidden"
+                       id="pagosJson"
+                       name="pagosJson"
+                       value="[]">
+
+
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ========================================================= -->
+<!-- MODAL AGREGAR PRODUCTO
+========================================================== -->
+
+<div class="modal fade"
+     id="modalProducto"
+     tabindex="-1"
+     aria-hidden="true">
+
+
+    <div class="modal-dialog modal-dialog-centered">
+
+
+        <div class="modal-content">
+
+
+            <!-- HEADER -->
+
+            <div class="modal-header">
+
+
+                <h5 class="modal-title">
+
+                    <i class="bi bi-cart-plus"></i>
+
+                    Agregar Mercadería
+
+                </h5>
+
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+
+                </button>
+
+
+            </div>
+
+
+            <!-- BODY -->
+
+            <div class="modal-body">
+
+
+                <!-- CÓDIGO -->
+
+                <div class="campo-modal">
+
+
+                    <label>
+
+                        Código
+
+                    </label>
+
+
+                    <input type="text"
+                           id="codigoProducto"
+                           class="form-control"
+                           placeholder="Código del producto">
+
+                </div>
+
+
+                <!-- PRODUCTO -->
+
+                <div class="campo-modal">
+
+
+                    <label>
+
+                        Producto
+
+                    </label>
+
+
+                    <select id="productoSeleccionado"
+                            class="form-select"
+                            onchange="cargarPrecio(this);">
+
+
+                        <option value="">
+
+                            -- Seleccione un producto --
+
+                        </option>
+
+
+                        <option th:each="p : ${producto}"
+                                th:value="${p.id}"
+                                th:text="${p.descripcion}">
+
+                        </option>
+
+
+                    </select>
+
+
+                </div>
+
+
+                <!-- CANTIDAD Y PRECIO -->
+
+                <div class="row">
+
+
+                    <div class="col-md-5">
+
+
+                        <div class="campo-modal">
+
+
+                            <label>
+
+                                Cantidad
+
+                            </label>
+
+
+                            <input type="number"
+                                   id="cantidadProducto"
+                                   class="form-control"
+                                   value="1"
+                                   min="1">
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="col-md-7">
+
+
+                        <div class="campo-modal">
+
+
+                            <label>
+
+                                Precio Unitario
+
+                            </label>
+
+
+                            <input type="number"
+                                   id="precioProducto"
+                                   class="form-control"
+                                   value="0"
+                                   readonly>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- DESCUENTO -->
+
+                <div class="campo-modal">
+
+
+                    <label>
+
+                        Descuento %
+
+                    </label>
+
+
+                    <input type="number"
+                           id="descuentoProducto"
+                           class="form-control"
+                           value="0"
+                           min="0"
+                           max="100">
+
+                </div>
+
+
+                <!-- TOTAL PREVIO -->
+
+                <div class="modal-total">
+
+
+                    Total del producto:
+
+
+                    <strong id="totalProductoModal">
+
+                        Gs. 0
+
+                    </strong>
+
+
+                </div>
+
+
+            </div>
+
+
+            <!-- FOOTER -->
+
+            <div class="modal-footer">
+
+
+                <button type="button"
+                        class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal">
+
+
+                    Cancelar
+
+
+                </button>
+
+
+                <button type="button"
+                        class="btn btn-morado"
+                        onclick="agregarDetalle();">
+
+
+                    <i class="bi bi-plus-circle"></i>
+
+
+                    Agregar
+
+
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ========================================================= -->
+<!-- MODAL REGISTRAR PAGO
+========================================================== -->
+
+<div class="modal fade"
+     id="modalPago"
+     tabindex="-1"
+     aria-labelledby="modalPagoLabel"
+     aria-hidden="true">
+
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+
+        <div class="modal-content modal-pago">
+
+
+            <!-- HEADER -->
+
+            <div class="modal-header">
+
+
+                <h5 class="modal-title"
+                    id="modalPagoLabel">
+
+
+                    <i class="bi bi-cash-coin"></i>
+
+                    Registrar Pago
+
+
+                </h5>
+
+                <button type="button"
+                        class="btn-success"
+                        data-bs-dismiss="modal"
+                        aria-label="Cerrar">
+
+                </button>
+
+
+            </div>
+
+            <!-- BODY -->
+
+            <div class="modal-body">
+
+
+                <!-- ================================================= -->
+                <!-- RESUMEN
+                ================================================== -->
+
+                <div class="pago-resumen">
+
+                    <div class="pago-resumen-item">
+
+
+                        <span class="pago-resumen-label">
+
+                            Total a Pagar
+
+                        </span>
+
+
+                        <strong id="pagoTotal">
+
+                            Gs. 0
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="pago-resumen-item">
+
+
+                        <span class="pago-resumen-label">
+
+                            Total Pagado
+
+                        </span>
+
+
+                        <strong id="pagoPagado">
+
+                            Gs. 0
+
+                        </strong>
+
+
+                    </div>
+
+
+                    <div class="pago-resumen-item">
+
+
+                        <span class="pago-resumen-label">
+
+                            Saldo
+
+                        </span>
+
+
+                        <strong id="pagoSaldo">
+
+                            Gs. 0
+
+                        </strong>
+
+
+                    </div>
+
+                </div>
+                <hr>
+
+
+                <!-- ================================================= -->
+                <!-- AGREGAR PAGO
+                ================================================== -->
+
+                <div class="pago-nuevo">
+
+
+                    <div class="pago-nuevo-header">
+
+                        <i class="bi bi-plus-circle"></i>
+
+                        Agregar pago
+
+                    </div>
+
+
+                    <div class="row g-3 align-items-end">
+
+
+                        <!-- MÉTODO -->
+
+                        <div class="col-md-4">
+
+
+                            <label for="metodoPago"
+                                   class="form-label">
+
+
+                                Método de Pago
+
+
+                            </label>
+
+
+                            <select id="metodoPago"
+                                    class="form-select">
+
+
+                                <option value="">
+
+                                    -- Seleccione --
+
+                                </option>
+
+
+                                <option value="EFECTIVO">
+
+                                    Efectivo
+
+                                </option>
+
+
+                                <option value="TARJETA">
+
+                                    Tarjeta
+
+                                </option>
+
+
+                                <option value="TRANSFERENCIA">
+
+                                    Transferencia
+
+                                </option>
+
+
+                                <option value="CHEQUE">
+
+                                    Cheque
+
+                                </option>
+
+
+                            </select>
+
+
+                        </div>
+
+
+                        <!-- MONTO -->
+
+                        <div class="col-md-3">
+
+
+                            <label for="montoPago"
+                                   class="form-label">
+
+
+                                Monto
+
+
+                            </label>
+
+
+                            <input type="number"
+                                   id="montoPago"
+                                   class="form-control"
+                                   min="1"
+                                   step="1"
+                                   placeholder="0">
+
+
+                        </div>
+
+
+                        <!-- DETALLE -->
+
+                        <div class="col-md-4">
+
+
+                            <label for="detallePago"
+                                   class="form-label">
+
+
+                                Detalle
+
+
+                            </label>
+
+
+                            <input type="text"
+                                   id="detallePago"
+                                   class="form-control"
+                                   placeholder="N° operación, banco, etc.">
+
+
+                        </div>
+
+
+                        <!-- BOTÓN + -->
+
+                        <div class="col-md-1">
+
+
+                            <button type="button"
+                                    class="btn btn-morado btn-agregar-pago"
+                                    id="btnAgregarPago"
+                                    title="Agregar pago">
+
+
+                                <i class="bi bi-plus-lg"></i>
+
+
+                            </button>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- MENSAJE DE ERROR
+                ================================================== -->
+
+                <div id="mensajePago"
+                     class="alert alert-danger mt-3 d-none">
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- TABLA DE PAGOS
+                ================================================== -->
+
+                <div class="table-responsive mt-4">
+
+
+                    <table class="table table-bordered table-hover tabla-pagos">
+
+
+                        <thead>
+
+
+                        <tr>
+
+
+                            <th>
+
+                                Método de Pago
+
+                            </th>
+
+
+                            <th>
+
+                                Detalles
+
+                            </th>
+
+
+                            <th class="text-end">
+
+                                Monto
+
+                            </th>
+
+
+                            <th class="text-center"
+                                style="width: 80px;">
+
+                                <i class="bi bi-trash"></i>
+
+                            </th>
+
+
+                        </tr>
+
+
+                        </thead>
+
+
+                        <tbody id="pagosBody">
+
+
+                        <tr id="sinPagos">
+
+
+                            <td colspan="4"
+                                class="text-center text-muted py-4">
+
+
+                                <i class="bi bi-cash-stack fs-3"></i>
+
+
+                                <br>
+
+
+                                No se encontraron pagos
+
+
+                            </td>
+
+
+                        </tr>
+
+
+                        </tbody>
+
+
+                    </table>
+
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- SALDO PENDIENTE
+                ================================================== -->
+
+                <div class="modal-total">
+
+
+                    Saldo pendiente:
+
+
+                    <strong id="saldoPendiente">
+
+                        Gs. 0
+
+                    </strong>
+
+
+                </div>
+
+
+            </div>
+
+
+            <!-- FOOTER -->
+
+            <div class="modal-footer">
+
+
+                <button type="button"
+                        class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal">
+
+
+                    <i class="bi bi-x-circle"></i>
+
+                    Cerrar
+
+
+                </button>
+
+
+                <button type="button"
+                        class="btn btn-morado"
+                        id="confirmarPago">
+
+
+                    <i class="bi bi-check-circle"></i>
+
+                    Confirmar Pago
+
+
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+<script th:src="@{/js/facturaVenta.js}" defer></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+
+</body>
+
+</html>

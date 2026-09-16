@@ -1,5 +1,6 @@
 package com.example.inventario.servicio;
 
+import com.example.inventario.entidad.Factura_venta;
 import com.example.inventario.entidad.Productos;
 
 import java.util.List;

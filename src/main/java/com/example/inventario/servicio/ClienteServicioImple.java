@@ -1,6 +1,7 @@
 package com.example.inventario.servicio;
 
 import com.example.inventario.entidad.Clientes;
+import com.example.inventario.entidad.Timbrado;
 import com.example.inventario.repositorio.ClienteRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,11 @@ public class ClienteServicioImple implements ClienteServicio{
     @Override
     public Clientes actualizarClientes(Clientes clientes) {
         return clienteRepositorio.save(clientes);
+    }
+
+    @Override
+    public Timbrado buscarPorId(Long timbradoId) {
+        return null;
     }
 
     @Override

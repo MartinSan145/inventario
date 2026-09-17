@@ -1,13 +1,8 @@
 package com.example.inventario.servicio;
 
 import com.example.inventario.DTO.DetallePagoDTO;
-import com.example.inventario.entidad.Detalle_Pago;
-import com.example.inventario.entidad.Factura_venta;
-import com.example.inventario.entidad.Pagos;
-import com.example.inventario.entidad.Tipo_pago;
-import com.example.inventario.repositorio.Factura_ventaRepositorio;
-import com.example.inventario.repositorio.PagosRepositorio;
-import com.example.inventario.repositorio.TipoPagoRepositorio;
+import com.example.inventario.entidad.*;
+import com.example.inventario.repositorio.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +11,7 @@ import java.util.List;
 
 
 @Service
-public class PagosServicioImple implements PagosServicio{
+public class PagosServicioImple implements PagosServicio {
 
     @Autowired
     private PagosRepositorio pagosRepositorio;
@@ -26,6 +21,12 @@ public class PagosServicioImple implements PagosServicio{
 
     @Autowired
     private TipoPagoRepositorio tipoPagoRepositorio;
+
+    @Autowired
+    private MovimientoStockServicio movimientoStockServicio;
+
+    @Autowired
+    Detalle_ventaRepositorio detalleVentaRepositorio;
 
     @Override
 
@@ -62,7 +63,7 @@ public class PagosServicioImple implements PagosServicio{
         if (totalNuevoPago > saldo) {
 
             throw new RuntimeException("El monto supera el saldo pendiente. " +
-                            "Saldo disponible: " + saldo);
+                    "Saldo disponible: " + saldo);
         }
 
         Pagos pago = new Pagos();
@@ -75,7 +76,7 @@ public class PagosServicioImple implements PagosServicio{
 
             Tipo_pago tipoPago =
                     tipoPagoRepositorio.findById(dto.getTipoPagoId()).orElseThrow(() ->
-                                    new RuntimeException("Tipo de pago no encontrado"));
+                            new RuntimeException("Tipo de pago no encontrado"));
 
             Detalle_Pago detalle = new Detalle_Pago();
 
@@ -94,14 +95,27 @@ public class PagosServicioImple implements PagosServicio{
 
         if (nuevoTotalPagado >= factura.getTotal()) {
             factura.setEstado("PAGADO");
+
+
+            List<Detalle_Factura> detallesFactura =
+                    detalleVentaRepositorio.buscarPorFactura(facturaId);
+
+            for (Detalle_Factura detalle : detallesFactura) {
+                if (detalle.getProducto() == null) {
+                    throw new RuntimeException("El detalle de la factura no tiene producto");
+                }
+                movimientoStockServicio.registrarMovimiento(detalle.getProducto().getId(), "SALIDA", detalle.getCantidad(), "Venta factura #" + facturaId);
+            }
+
         } else {
+
             factura.setEstado("PENDIENTE");
         }
-
         facturaVentaRepositorio.save(factura);
-
         return pagoGuardado;
+
     }
+
 
 
     @Override
@@ -114,3 +128,4 @@ public class PagosServicioImple implements PagosServicio{
         return pagosRepositorio.sumarPagosPorFactura(facturaId);
     }
 }
+

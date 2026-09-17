@@ -13,84 +13,84 @@
     CARGAR PRECIO
     */
 
+    /* ============================================================
+       CARGAR PRECIO DEL PRODUCTO
+       ============================================================ */
+
     function cargarPrecio(select) {
 
-
         const productoId = select.value;
-
 
         const precioInput =
             document.getElementById("precioProducto");
 
+        const precioArgInput =
+            document.getElementById("precioargentino");
 
         if (!productoId) {
 
             precioInput.value = 0;
+            precioArgInput.value = 0;
 
             actualizarTotalModal();
 
             return;
-
         }
-
 
         fetch("/productos/" + productoId + "/precio")
 
-
             .then(response => {
-
 
                 if (!response.ok) {
 
                     throw new Error(
                         "No se pudo obtener el precio"
                     );
-
                 }
-
 
                 return response.json();
 
             })
 
-
             .then(data => {
 
+                let precio = 0;
 
                 if (typeof data === "object") {
 
-                    precioInput.value =
-                        data.precio ?? 0;
+                    precio = data.precio ?? 0;
 
+                } else {
+
+                    precio = data;
                 }
 
-                else {
+                precioInput.value = precio;
 
-                    precioInput.value = data;
+                /* ==========================================
+                   CALCULAR PRECIO ARGENTINO
+                   ========================================== */
 
-                }
+                const precioArgentino =
+                    convertirAPesosArgentinos(precio);
 
+                precioArgInput.value =
+                    Math.round(precioArgentino);
 
                 actualizarTotalModal();
 
             })
 
-
             .catch(error => {
-
 
                 console.error(error);
 
-
                 precioInput.value = 0;
-
+                precioArgInput.value = 0;
 
                 actualizarTotalModal();
-
             });
-
     }
-
     /*
 ============================================================
 OBTENER RUC DEL CLIENTE
@@ -594,17 +594,27 @@ function renderizarDetalles() {
 
 
 
-        document.getElementById(
-            "totalFactura"
-        ).innerText =
+        document.getElementById("totalFactura").innerText =
             "Gs. " +
             formatearNumero(total);
 
         document.getElementById("totalFacturaHidden").value = total;
 
+        const totalArgentino = convertirAPesosArgentinos(total);
+
+        const totalFacturaArg =
+            document.getElementById("totalFacturaArg");
+
+
+
+        if (totalFacturaArg) {
+
+            totalFacturaArg.innerText =
+                formatearPesosArgentinos(totalArgentino);
+
     }
 
-
+}
 
     /*
     ============================================================
@@ -643,6 +653,8 @@ function renderizarDetalles() {
         document.getElementById(
             "totalProductoModal"
         ).innerText = "Gs. 0";
+
+        document.getElementById("precioargentino").value = "";
 
     }
 
@@ -714,3 +726,37 @@ function renderizarDetalles() {
 
     }
 
+    function obtenerCotizacionArgentina() {
+
+    const elemento = document.getElementById("cotizacionArgentina");
+
+    if (!elemento) {
+        return 0;
+    }
+
+    return parseFloat(
+        elemento.innerText.replace(",", ".")
+    ) || 0;
+}
+
+    function convertirAPesosArgentinos(guaranies) {
+
+    const cotizacion = obtenerCotizacionArgentina();
+
+    if (cotizacion <= 0) {
+        return 0;
+    }
+
+    return guaranies / cotizacion;
+}
+
+    function formatearPesosArgentinos(valor) {
+
+        return '$ ' + Number(valor).toLocaleString(
+            'es-AR',
+            {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }
+        );
+    }

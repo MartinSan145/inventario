@@ -388,14 +388,22 @@
 
                 <div>
 
-                    <label class="form-label fw-bold">
+                    <label class="form-label fw-bold" style="color: black">
 
                         Fecha
 
-                        <span th:text="${fecha}"></span>
+                        <span th:text="${fecha}" style="color: white"></span>
 
                     </label>
+                </div>
 
+                <div>
+                    <label class="form-label fw-bold" style="color: black">
+                        Cotización Arg:
+                        <span id="cotizacionArgentina" style="color: white;">
+                        4.60
+                        </span>
+                    </label>
                 </div>
 
 
@@ -916,6 +924,19 @@
 
                             </div>
 
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+
+                            <span class="fw-bold text-secondary">
+                            Total en Pesos Argentinos
+                            </span>
+                                <span class="fw-bold"
+                                      id="totalFacturaArg"
+                                      style="color: #593196;">
+                                $ 0
+                                </span>
+
+                            </div>
+
 
                         </div>
 
@@ -1150,11 +1171,12 @@
                     </div>
 
 
-                </div>
+
 
 
                 <!-- DESCUENTO -->
 
+                <div class="col-md-5">
                 <div class="campo-modal">
 
 
@@ -1173,7 +1195,25 @@
                            max="100">
 
                 </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="campo-modal">
 
+
+                        <label>
+
+                            Precio Peso Arg.
+
+                        </label>
+
+
+                        <input type="number"
+                               id="precioargentino"
+                               class="form-control"
+                               readonly>
+
+                    </div>
+                </div>
 
                 <!-- TOTAL PREVIO -->
 

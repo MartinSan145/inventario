@@ -2,14 +2,12 @@ package com.example.inventario.servicio;
 
 
 import com.example.inventario.DTO.DetalleFacturaDTO;
-import com.example.inventario.entidad.Factura_venta;
-import com.example.inventario.entidad.Timbrado;
+import com.example.inventario.entidad.*;
+import com.example.inventario.repositorio.AperturaCajaRepositorio;
 import com.example.inventario.repositorio.Factura_ventaRepositorio;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.inventario.entidad.Detalle_Factura;
-import com.example.inventario.entidad.Productos;
 import com.example.inventario.DTO.DetalleFacturaDTO;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -26,6 +24,10 @@ public class Factura_ventaServicioImple implements Factura_ventaServicio{
     private Factura_ventaRepositorio facturaVentaRepositorio;
     @Autowired
     private ProductoServicio productoServicio;
+
+    @Autowired
+    private AperturaCajaServicio aperturaCajaServicio;
+
     @Override
     public List<Factura_venta> listarFacturas() {
         return facturaVentaRepositorio.findAll();
@@ -43,9 +45,12 @@ public class Factura_ventaServicioImple implements Factura_ventaServicio{
     }
 
     @Override
-    public void guardarFactura(
-            Factura_venta factura_venta,
+    public void guardarFactura(Factura_venta factura_venta,
             List<DetalleFacturaDTO> detalles) {
+
+       // apertura_caja aperturaCaja = aperturaCajaServicio.obternerAperturaPorId(aperturaCajaId);
+
+      //  factura_venta.setAperturaCaja(aperturaCaja);
 
         Timbrado timbrado = factura_venta.getTimbrado();
 
@@ -88,6 +93,7 @@ public class Factura_ventaServicioImple implements Factura_ventaServicio{
         );
 
         factura_venta.setNro_factura(nroFactura);
+
 
 
         // ==========================================

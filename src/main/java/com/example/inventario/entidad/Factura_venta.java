@@ -32,6 +32,10 @@ public class Factura_venta {
     @JoinColumn(name = "id_cliente", nullable = false)
     private Clientes clientes;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_apertura_caja", nullable = false)
+    private apertura_caja aperturaCaja;
+
     @ManyToOne
     @JoinColumn(name = "id_timbrado", nullable = false)
     private Timbrado timbrado;
@@ -39,7 +43,7 @@ public class Factura_venta {
     @OneToMany(mappedBy = "factura_venta", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Detalle_Factura> detalle_facturas =new ArrayList<>();
 
-    public Factura_venta(Long id, String nro_factura, LocalDateTime fecha, Clientes clientes, Timbrado timbrado, String estado, Integer total) {
+    public Factura_venta(Long id, String nro_factura, LocalDateTime fecha, Clientes clientes, Timbrado timbrado, String estado, Integer total, apertura_caja aperturaCaja) {
         this.id = id;
         this.nro_factura = nro_factura;
         this.fecha = fecha;
@@ -47,6 +51,7 @@ public class Factura_venta {
         this.timbrado = timbrado;
         this.estado = estado;
         this.total = total;
+        this.aperturaCaja = aperturaCaja;
     }
 
     public Factura_venta() {
@@ -58,6 +63,14 @@ public class Factura_venta {
 
     public void setClientes(Clientes clientes) {
         this.clientes = clientes;
+    }
+
+    public apertura_caja getAperturaCaja() {
+        return aperturaCaja;
+    }
+
+    public void setAperturaCaja(apertura_caja aperturaCaja) {
+        this.aperturaCaja = aperturaCaja;
     }
 
     public void agregarDetalle(Detalle_Factura detalle_factura) {

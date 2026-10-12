@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Empleados</title>
+
+    <!-- Bootswatch -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/pulse/bootstrap.min.css">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+    <!-- CSS propio -->
+    <link rel="stylesheet"
+          th:href="@{/css/vetshop.css}">
+
+    <!-- JavaScript -->
+    <script th:src="@{/js/empleados.js}" defer></script>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-custom">
+
+    <div class="container-fluid px-4">
+
+        <!-- LOGO -->
+        <a class="navbar-brand d-flex align-items-center"
+           th:href="@{/menu}">
+
+            <img src="/img/loogo.PNG"
+                 alt="VETSHOP - Dra. Sheila Sánchez"
+                 class="logo-navbar">
+
+            <span class="system-name">
+                Gestión Veterinaria
+            </span>
+
+        </a>
+
+
+        <!-- USUARIO -->
+        <div class="user-info">
+
+            <i class="bi bi-person-circle"></i>
+
+            <span>Administrador</span>
+
+
+            <!-- MENÚ -->
+            <a th:href="@{/menu}"
+               class="btn btn-sm btn-vet-outline ms-2">
+
+                <i class="bi bi-house"></i>
+
+                <span>Menú</span>
+
+            </a>
+
+
+            <!-- SALIR -->
+            <a th:href="@{/logout}"
+               class="btn btn-sm btn-vet-outline">
+
+                <i class="bi bi-box-arrow-right"></i>
+
+                <span>Salir</span>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- CONTENIDO -->
+<div class="container mt-5">
+
+    <!-- ENCABEZADO DE LA PÁGINA -->
+    <div class="page-header">
+
+        <div>
+
+            <h2 class="page-title">
+
+                <i class="bi bi-person-badge"></i>
+
+                Empleados
+
+            </h2>
+
+            <p class="page-subtitle">
+
+                Administra los empleados
+                de VETSHOP.
+
+            </p>
+
+        </div>
+
+
+        <!-- NUEVO EMPLEADO -->
+        <a th:href="@{/empleados/nuevo}"
+           class="btn btn-vet">
+
+            <i class="bi bi-plus-circle"></i>
+
+            Nuevo empleado
+
+        </a>
+
+    </div>
+
+
+    <!-- CARD -->
+    <div class="card product-card">
+
+
+        <!-- HEADER DE LA CARD -->
+        <div class="product-card-header">
+
+            <h5>
+
+                <i class="bi bi-list-ul"></i>
+
+                Lista de Empleados
+
+            </h5>
+
+
+            <span>
+
+                <i class="bi bi-person-lines-fill"></i>
+
+            </span>
+
+        </div>
+
+
+        <!-- BODY -->
+        <div class="card-body p-0">
+
+
+            <!-- TABLA -->
+            <div class="table-container">
+
+                <table class="table table-hover align-middle">
+
+
+                    <!-- CABECERA DE TABLA -->
+                    <thead>
+
+                    <tr>
+
+                        <th>Nombre</th>
+
+                        <th>Apellido</th>
+
+                        <th>Cédula</th>
+
+                        <th>Dirección</th>
+
+                        <th>Correo</th>
+
+                        <th>Ciudad</th>
+
+                        <th class="text-center">
+                            Acciones
+                        </th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <!-- CUERPO DE TABLA -->
+                    <tbody>
+
+                    <tr th:each="empleado : ${empleados}">
+
+                        <td th:text="${empleado.nombre}">
+                            Nombre
+                        </td>
+
+                        <td th:text="${empleado.apellido}">
+                            Apellido
+                        </td>
+
+                        <td th:text="${empleado.cedula}">
+                            Cédula
+                        </td>
+
+                        <td th:text="${empleado.direccion}">
+                            Dirección
+                        </td>
+
+                        <td th:text="${empleado.correo}">
+                            Correo
+                        </td>
+
+                        <td th:text="${empleado.ciudad.descripcion}">
+                            Ciudad
+                        </td>
+
+
+                        <!-- ACCIONES -->
+                        <td class="text-center">
+
+                            <!-- EDITAR -->
+                            <a th:href="@{/empleados/editar/{id}(id=${empleado.id})}"
+                               class="btn btn-sm btn-warning me-1"
+                               title="Editar empleado">
+
+                                <i class="bi bi-pencil-square"></i>
+
+                            </a>
+
+
+                            <!-- ELIMINAR -->
+                            <a th:href="@{/empleados/{id}(id=${empleado.id})}"
+                               class="btn btn-sm btn-danger"
+                               title="Eliminar empleado">
+
+                                <i class="bi bi-trash"></i>
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+```

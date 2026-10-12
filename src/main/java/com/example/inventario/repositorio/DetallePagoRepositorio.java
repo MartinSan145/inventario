@@ -13,5 +13,18 @@ public interface DetallePagoRepositorio
 
     @Query("SELECT d FROM Detalle_Pago d WHERE d.pago.id_pago = :pagoId")
     List<Detalle_Pago> buscarPorPagoId(@Param("pagoId") Long pagoId);
+
+    @Query("""
+        SELECT d
+        FROM Detalle_Pago d
+        JOIN d.pago p
+        JOIN p.id_factura f
+        WHERE f.aperturaCaja.id = :aperturaId
+        AND f.estado <> 'ANULADO'
+    """)
+    List<Detalle_Pago> buscarPorAperturaCaja(
+            @Param("aperturaId") Long aperturaId
+    );
+
 }
 

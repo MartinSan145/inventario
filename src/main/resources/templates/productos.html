@@ -1,50 +1,93 @@
+```html
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Productos | VETSHOP</title>
 
-
-    <!-- =====================================================
-         BOOTSWATCH
-         ===================================================== -->
-
+    <!-- BOOTSWATCH -->
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/pulse/bootstrap.min.css">
-    <link rel="stylesheet"
-          th:href="@{/css/vetshop.css}">
 
-    <!-- =====================================================
-         BOOTSTRAP ICONS
-         ===================================================== -->
+    <link rel="stylesheet" th:href="@{/css/vetshop.css}">
 
+    <!-- BOOTSTRAP ICONS -->
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
+    <style>
+        /* BUSCADOR */
+        .search-container {
+            padding: 20px 22px;
+            background: #fff;
+            border-bottom: 1px solid #eee7f5;
+        }
 
+        .search-label {
+            font-weight: 600;
+            color: #47277a;
+            margin-bottom: 9px;
+        }
 
+        .search-box {
+            max-width: 550px;
+        }
+
+        .search-box .input-group-text {
+            background: #f4eff9;
+            color: #593196;
+            border-color: #ded2ed;
+        }
+
+        .search-box .form-control {
+            border-color: #ded2ed;
+            box-shadow: none;
+        }
+
+        .search-box .form-control:focus {
+            border-color: #593196;
+            box-shadow: 0 0 0 0.2rem rgba(89, 49, 150, 0.12);
+        }
+
+        .btn-limpiar {
+            color: #593196;
+            border-color: #593196;
+        }
+
+        .btn-limpiar:hover {
+            background: #593196;
+            color: white;
+        }
+
+        .search-info {
+            margin-top: 10px;
+            color: #71677e;
+            font-size: 0.9rem;
+        }
+
+        .sin-resultados {
+            padding: 35px 15px !important;
+            text-align: center;
+            color: #71677e;
+        }
+
+        .sin-resultados i {
+            display: block;
+            font-size: 2rem;
+            color: #593196;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
-
 
 <body>
 
-
-<!-- =====================================================
-     NAVBAR
-     ===================================================== -->
-
+<!-- NAVBAR -->
 <nav class="navbar navbar-custom">
-
     <div class="container-fluid px-4">
-
-
-        <!-- LOGO -->
 
         <a class="navbar-brand d-flex align-items-center"
            th:href="@{/menu}">
@@ -53,312 +96,271 @@
                  alt="VETSHOP - Dra. Sheila Sánchez"
                  class="logo-navbar">
 
-
-            <span class="system-name">
-
-                Gestión Veterinaria
-
-            </span>
-
+            <span class="system-name">Gestión Veterinaria</span>
         </a>
 
-
-        <!-- USUARIO -->
-
         <div class="user-info">
-
             <i class="bi bi-person-circle"></i>
-
             <span>Administrador</span>
-
-
-            <!-- MENÚ -->
 
             <a th:href="@{/menu}"
                class="btn btn-sm btn-vet-outline ms-2">
-
                 <i class="bi bi-house"></i>
-
                 <span>Menú</span>
-
             </a>
-
-
-            <!-- SALIR -->
 
             <a th:href="@{/logout}"
                class="btn btn-sm btn-vet-outline">
-
                 <i class="bi bi-box-arrow-right"></i>
-
                 <span>Salir</span>
-
             </a>
-
         </div>
 
     </div>
-
 </nav>
 
-
-
-<!-- =====================================================
-     CONTENIDO
-     ===================================================== -->
-
+<!-- CONTENIDO -->
 <main class="main-container">
 
-
-    <!-- =================================================
-         ENCABEZADO
-         ================================================= -->
-
+    <!-- ENCABEZADO -->
     <div class="page-header">
-
-
         <div>
-
             <h2 class="page-title">
-
                 <i class="bi bi-box-seam"></i>
-
                 Productos
-
             </h2>
 
-
             <p class="page-subtitle">
-
-                Administra los productos y medicamentos
-                de VETSHOP.
-
+                Administra los productos y medicamentos de VETSHOP.
             </p>
-
         </div>
 
-
-        <!-- NUEVO PRODUCTO -->
-
-        <a th:href="@{/productos/nuevo}"
-           class="btn btn-vet">
-
+        <a th:href="@{/productos/nuevo}" class="btn btn-vet">
             <i class="bi bi-plus-circle"></i>
-
             Nuevo producto
-
         </a>
-
     </div>
 
-
-
-    <!-- =================================================
-         TARJETA PRODUCTOS
-         ================================================= -->
-
+    <!-- TARJETA PRODUCTOS -->
     <div class="card product-card">
 
-
         <!-- HEADER -->
-
         <div class="product-card-header">
-
             <h5>
-
                 <i class="bi bi-list-ul"></i>
-
                 Lista de Productos
-
             </h5>
 
-
             <span>
-
                 <i class="bi bi-box"></i>
-
             </span>
+        </div>
+
+        <!-- BUSCADOR -->
+        <div class="search-container">
+
+            <label for="buscarProducto" class="search-label">
+                <i class="bi bi-search"></i>
+                Buscar productos
+            </label>
+
+            <div class="input-group search-box">
+
+                <span class="input-group-text">
+                    <i class="bi bi-search"></i>
+                </span>
+
+                <input type="text"
+                       id="buscarProducto"
+                       class="form-control"
+                       placeholder="Escribe una descripción o categoría..."
+                       autocomplete="off">
+
+                <button type="button"
+                        id="limpiarBusqueda"
+                        class="btn btn-outline-secondary"
+                        title="Limpiar búsqueda">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+
+            </div>
+
+            <div class="search-info">
+                <i class="bi bi-info-circle"></i>
+                <span id="contadorProductos">0 productos</span>
+            </div>
 
         </div>
 
-
-        <!-- BODY -->
-
+        <!-- TABLA -->
         <div class="card-body p-0">
-
-
-            <!-- TABLA -->
 
             <div class="table-container">
 
                 <table class="table table-hover align-middle">
 
-
                     <thead>
-
                     <tr>
-
-                        <th>
-                            Descripción
-                        </th>
-
-                        <th>
-                            Precio Venta
-                        </th>
-
-                        <th>
-                            Precio Compra
-                        </th>
-
-                        <th>
-                            Stock
-                        </th>
-
-                        <th>
-                            Categoría
-                        </th>
-
-                        <th class="text-center">
-                            Acciones
-                        </th>
-
+                        <th>Descripción</th>
+                        <th>Precio Venta</th>
+                        <th>Precio Compra</th>
+                        <th>Stock</th>
+                        <th>Categoría</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
-
                     </thead>
 
-
-                    <tbody>
-
+                    <tbody id="tablaProductos">
 
                     <!-- PRODUCTOS -->
-
-                    <tr th:each="producto : ${productos}">
-
+                    <tr th:each="producto : ${productos}"
+                        class="fila-producto"
+                        th:attr="data-busqueda=${producto.descripcion + ' ' + (producto.categoria != null ? producto.categoria.descripcion : '')}">
 
                         <!-- DESCRIPCIÓN -->
-
                         <td>
-
-                            <strong th:text="${producto.descripcion}">
-                            </strong>
-
+                            <strong th:text="${producto.descripcion}"></strong>
                         </td>
-
 
                         <!-- PRECIO VENTA -->
-
                         <td class="price">
-
-                            <span th:text="${producto.precio_venta}">
-                            </span>
-
+                            <span th:text="${producto.precio_venta}"></span>
                         </td>
-
 
                         <!-- PRECIO COMPRA -->
-
                         <td>
-
-                            <span th:text="${producto.precio_compra}">
-                            </span>
-
+                            <span th:text="${producto.precio_compra}"></span>
                         </td>
-
 
                         <!-- STOCK -->
-
                         <td class="stock">
-
-                            <span th:text="${producto.stock}">
-                            </span>
-
+                            <span th:text="${producto.stock}"></span>
                         </td>
-
 
                         <!-- CATEGORÍA -->
-
                         <td>
-
-                            <span th:text="${producto.categoria.descripcion}">
-                            </span>
-
+                            <span th:text="${producto.categoria != null ? producto.categoria.descripcion : 'Sin categoría'}"></span>
                         </td>
 
-
                         <!-- ACCIONES -->
-
                         <td class="text-center">
-
-
-                            <!-- EDITAR -->
 
                             <a th:href="@{/productos/editar/{id}(id=${producto.id})}"
                                class="btn btn-action btn-edit me-1"
                                title="Editar producto">
 
                                 <i class="bi bi-pencil-square"></i>
-
                             </a>
-
-
-                            <!-- ELIMINAR -->
 
                             <a th:href="@{/productos/{id}(id=${producto.id})}"
                                class="btn btn-action btn-delete"
                                title="Eliminar producto">
 
                                 <i class="bi bi-trash"></i>
-
                             </a>
-
 
                         </td>
 
-
                     </tr>
 
+                    <!-- MENSAJE SIN RESULTADOS -->
+                    <tr id="sinResultados" style="display: none;">
+                        <td colspan="6" class="sin-resultados">
+                            <i class="bi bi-search"></i>
+
+                            <strong>No se encontraron productos</strong>
+
+                            <div>
+                                Intenta buscar con otra descripción o categoría.
+                            </div>
+                        </td>
+                    </tr>
 
                     </tbody>
 
                 </table>
 
             </div>
-
         </div>
-
     </div>
-
 
 </main>
 
-
-
-<!-- =====================================================
-     FOOTER
-     ===================================================== -->
-
+<!-- FOOTER -->
 <footer>
-
     <strong>VETSHOP</strong>
-
     · Dra. Sheila Sánchez
-
     · Gestión Veterinaria
-
     &copy; 2026
-
 </footer>
 
+<!-- BOOTSTRAP JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- BUSCADOR DE PRODUCTOS -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
 
-<!-- =====================================================
-     BOOTSTRAP JS
-     ===================================================== -->
+        const buscador = document.getElementById("buscarProducto");
+        const botonLimpiar = document.getElementById("limpiarBusqueda");
+        const contador = document.getElementById("contadorProductos");
+        const mensajeSinResultados = document.getElementById("sinResultados");
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+        const filas = Array.from(
+            document.querySelectorAll(".fila-producto")
+        );
+
+        function filtrarProductos() {
+
+            const texto = buscador.value
+                .trim()
+                .toLocaleLowerCase("es");
+
+            let encontrados = 0;
+
+            filas.forEach(function (fila) {
+
+                const contenido = (
+                    fila.getAttribute("data-busqueda") || ""
+                ).toLocaleLowerCase("es");
+
+                const coincide = contenido.includes(texto);
+
+                fila.style.display = coincide ? "" : "none";
+
+                if (coincide) {
+                    encontrados++;
+                }
+            });
+
+            mensajeSinResultados.style.display =
+                encontrados === 0 ? "" : "none";
+
+            contador.textContent =
+                encontrados === 1
+                    ? "1 producto encontrado"
+                    : encontrados + " productos encontrados";
+        }
+
+        // Buscar automáticamente al escribir
+        buscador.addEventListener("input", filtrarProductos);
+
+        // Limpiar el buscador
+        botonLimpiar.addEventListener("click", function () {
+
+            buscador.value = "";
+
+            filtrarProductos();
+
+            buscador.focus();
+        });
+
+        // Contar todos los productos al cargar la página
+        filtrarProductos();
+
+    });
 </script>
 
-
 </body>
-
 </html>
+```

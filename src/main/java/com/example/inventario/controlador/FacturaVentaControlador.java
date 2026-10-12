@@ -3,6 +3,7 @@ package com.example.inventario.controlador;
 import com.example.inventario.entidad.Clientes;
 import com.example.inventario.entidad.Factura_venta;
 import com.example.inventario.entidad.Timbrado;
+import com.example.inventario.entidad.apertura_caja;
 import com.example.inventario.servicio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,14 +25,18 @@ public class FacturaVentaControlador {
     private ProductoServicio productoServicio;
     private TimbradoServicio timbradoServicio;
     private TipoPagoServicio tipoPagoServicio;
+    private CajaServicio cajaServicio;
+    private AperturaCajaServicio aperturaCajaServicio;
 
 
-    public FacturaVentaControlador(ClienteServicio clienteServicio, Factura_ventaServicio facturaVentaServicio, ProductoServicio productoServicio, TimbradoServicio timbradoservicio, TipoPagoServicio tipoPagoServicio) {
+    public FacturaVentaControlador(ClienteServicio clienteServicio, Factura_ventaServicio facturaVentaServicio, ProductoServicio productoServicio, TimbradoServicio timbradoservicio, TipoPagoServicio tipoPagoServicio, CajaServicio cajaServicio, AperturaCajaServicio aperturaCajaServicio) {
         this.clienteServicio = clienteServicio;
         this.facturaVentaServicio = facturaVentaServicio;
         this.productoServicio = productoServicio;
         this.timbradoServicio = timbradoservicio;
         this.tipoPagoServicio = tipoPagoServicio;
+        this.cajaServicio = cajaServicio;
+        this.aperturaCajaServicio = aperturaCajaServicio;
     }
 
     @GetMapping({"/factura_venta", "/"})
@@ -40,6 +45,18 @@ public class FacturaVentaControlador {
         modelo.addAttribute("cliente", clienteServicio.listarTodoslosClientes());
         modelo.addAttribute("producto", productoServicio.listarTodoslosProductos());
         modelo.addAttribute("timbrado", timbradoServicio.listarTodoslosTimbrado());
+        modelo.addAttribute("Caja", cajaServicio.listarAperturasCajas());
+        modelo.addAttribute("aperturaCaja", aperturaCajaServicio.listarApertura());
+
+        try {
+            apertura_caja aperturaActual =
+                    aperturaCajaServicio.obtenerAperturaAbierta();
+
+            modelo.addAttribute("aperturaActual", aperturaActual);
+
+        } catch (RuntimeException e) {
+            modelo.addAttribute("errorCaja", "No existe una caja abierta. Debe abrir una caja antes de realizar una venta.");
+        }
 
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy' 'HH:mm");
         modelo.addAttribute("fecha", LocalDateTime.now().format(formato));
@@ -122,8 +139,13 @@ public class FacturaVentaControlador {
 
         Clientes cliente = clienteServicio.obtenerClientesPorId(clienteId);
 
+
         factura.setTimbrado(timbrado);
         factura.setCliente(cliente);
+
+        apertura_caja aperturaActual = aperturaCajaServicio.obtenerAperturaAbierta();
+
+        factura.setAperturaCaja(aperturaActual);
 
 
         List<DetalleFacturaDTO> detalles = new ArrayList<>();
@@ -174,10 +196,7 @@ public class FacturaVentaControlador {
         }
 
 
-        facturaVentaServicio.guardarFactura(
-                factura,
-                detalles
-        );
+        facturaVentaServicio.guardarFactura(factura, detalles);
 
         return "redirect:/factura_venta";
     }

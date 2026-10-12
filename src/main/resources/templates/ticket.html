@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="es"
       xmlns:th="http://www.thymeleaf.org">
@@ -205,6 +205,24 @@
                 display: none;
             }
 
+            .total-argentino {
+            text-align: right;
+            margin-top: 6px;
+            font-size: 11px;
+            line-height: 1.4;
+            }
+
+            .total-argentino strong {
+            display: block;
+            font-size: 13px;
+            }
+
+            .total-argentino small {
+            display: block;
+            font-size: 9px;
+            margin-top: 2px;
+            }
+
         }
 
     </style>
@@ -393,6 +411,27 @@
 
     </div>
 
+    <div class="total-argentino">
+
+        <span>EQUIVALENTE APROX.:</span>
+
+        <strong>
+            ARS $
+            <span th:text="${#numbers.formatInteger(totalArgentino, 0, 'POINT')}">
+            13.750
+        </span>
+        </strong>
+
+        <small>
+            Cotización: 1 ARS =
+            <span th:text="${cotizacionArgentina}">
+            4,00
+        </span>
+            Gs.
+        </small>
+
+    </div>
+
 
     <div class="linea"></div>
 
@@ -454,4 +493,4 @@
 </body>
 
 </html>
-```
+

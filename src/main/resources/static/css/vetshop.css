@@ -694,3 +694,407 @@
         width: 100%;
     }
 }
+
+  /* =================================================
+           MODAL DE CAJA
+           ================================================= */
+
+        .caja-modal .modal-content {
+
+            border: none;
+            border-radius: 16px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 15px 45px rgba(0, 0, 0, 0.25);
+
+        }
+
+
+        .caja-modal .modal-header {
+
+            background: linear-gradient(
+                135deg,
+                #593196,
+                #7042b5
+            );
+
+            color: white;
+
+            border: none;
+
+            padding: 18px 22px;
+
+        }
+
+
+        .caja-modal .modal-title {
+
+            font-weight: 600;
+
+        }
+
+
+        .caja-modal .modal-title i {
+
+            margin-right: 8px;
+
+        }
+
+
+        .caja-modal .modal-body {
+
+            padding: 25px;
+
+            background-color: #ffffff;
+
+        }
+
+
+        .caja-modal .modal-footer {
+
+            background-color: #f8f6fb;
+
+            border-top: 1px solid #eee;
+
+            padding: 15px 22px;
+
+        }
+
+
+        /* =================================================
+           APERTURA
+           ================================================= */
+
+        .apertura-info {
+
+            background-color: #f4eff9;
+
+            border-left: 4px solid #593196;
+
+            border-radius: 8px;
+
+            padding: 13px 15px;
+
+            margin-bottom: 22px;
+
+            color: #593196;
+
+        }
+
+
+        .apertura-info i {
+
+            margin-right: 6px;
+
+        }
+
+
+        .monto-apertura {
+
+            font-size: 1.35rem;
+
+            font-weight: 600;
+
+        }
+
+
+        /* =================================================
+           TABLA CIERRE
+           ================================================= */
+
+        .cierre-table {
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .cierre-table thead th {
+
+            background-color: #f4eff9;
+
+            color: #593196;
+
+            font-weight: 700;
+
+            border-bottom: 2px solid #e3dcec;
+
+        }
+
+
+        .cierre-table td {
+
+            vertical-align: middle;
+
+        }
+
+
+        .cierre-table .denominacion {
+
+            font-weight: 600;
+
+            color: #343a40;
+
+        }
+
+
+        .cierre-table .cantidad-input {
+
+            width: 90px;
+
+            margin: auto;
+
+            text-align: center;
+
+        }
+
+
+        .cierre-table .total-denominacion {
+
+            font-weight: 600;
+
+            color: #593196;
+
+        }
+
+
+        /* =================================================
+           TOTAL DEL CIERRE
+           ================================================= */
+
+        .cierre-total {
+
+            background-color: #f4eff9;
+
+            border-radius: 10px;
+
+            padding: 15px 18px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .cierre-total-label {
+
+            font-weight: 600;
+
+            color: #343a40;
+
+        }
+
+
+        .cierre-total-value {
+
+            color: #593196;
+
+            font-size: 1.3rem;
+
+            font-weight: 700;
+
+        }
+
+
+        /* =================================================
+           OBSERVACIÓN
+           ================================================= */
+
+        .observacion-label {
+
+            font-weight: 600;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .observacion {
+
+            resize: vertical;
+
+            min-height: 75px;
+
+        }
+
+
+        /* =================================================
+           BOTONES DEL MODAL
+           ================================================= */
+
+        .btn-caja-primary {
+
+            background-color: #593196;
+
+            border: 1px solid #593196;
+
+            color: white;
+
+            border-radius: 8px;
+
+            padding: 9px 18px;
+
+            font-weight: 600;
+
+        }
+
+
+        .btn-caja-primary:hover {
+
+            background-color: #47277a;
+
+            border-color: #47277a;
+
+            color: white;
+
+        }
+
+
+        .btn-caja-secondary {
+
+            background-color: white;
+
+            border: 1px solid #593196;
+
+            color: #593196;
+
+            border-radius: 8px;
+
+            padding: 9px 18px;
+
+            font-weight: 600;
+
+        }
+
+
+        .btn-caja-secondary:hover {
+
+            background-color: #f4eff9;
+
+            color: #47277a;
+
+        }
+
+
+        /* =================================================
+           ESTADO DE CAJA
+           ================================================= */
+
+        .estado-caja {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            padding: 6px 12px;
+
+            border-radius: 20px;
+
+            font-size: 0.85rem;
+
+            font-weight: 600;
+
+        }
+
+
+        .estado-abierta {
+
+            background-color: #d1e7dd;
+
+            color: #0f5132;
+
+        }
+
+
+        .estado-cerrada {
+
+            background-color: #f8d7da;
+
+            color: #842029;
+
+        }
+
+
+        /* =================================================
+           RESPONSIVE
+           ================================================= */
+
+        @media (max-width: 576px) {
+
+            .caja-modal .modal-body {
+
+                padding: 18px;
+
+            }
+
+
+            .cierre-table {
+
+                font-size: 0.9rem;
+
+            }
+
+
+            .cierre-table .cantidad-input {
+
+                width: 70px;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           ESTADO DE CAJA
+           ===================================================== */
+
+        .estado-caja {
+            display: flex;
+            align-items: center;
+        }
+
+        .estado-caja-indicador {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 8px 14px;
+
+            border-radius: 20px;
+
+            font-size: 0.9rem;
+            font-weight: 600;
+
+            border: 1px solid transparent;
+        }
+
+        .estado-caja-indicador i {
+            font-size: 1rem;
+        }
+
+
+        /* CAJA ABIERTA */
+
+        .estado-caja-indicador.caja-abierta {
+            color: #198754;
+            background-color: #d1e7dd;
+            border-color: #a3cfbb;
+        }
+
+
+        /* CAJA CERRADA */
+
+        .estado-caja-indicador.caja-cerrada {
+            color: #dc3545;
+            background-color: #f8d7da;
+            border-color: #f1aeb5;
+        }

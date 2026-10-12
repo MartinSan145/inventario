@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Caja - VETSHOP</title>
+
+
+    <!-- =====================================================
+         BOOTSTRAP
+         ===================================================== -->
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/pulse/bootstrap.min.css">
+
+
+    <!-- =====================================================
+         BOOTSTRAP ICONS
+         ===================================================== -->
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+    <!-- =====================================================
+         CSS VETSHOP
+         ===================================================== -->
+
+    <link rel="stylesheet"
+          th:href="@{/css/vetshop.css}">
+
+
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     CABECERA VETSHOP
+     ===================================================== -->
+
+<nav class="navbar navbar-custom">
+
+    <div class="container-fluid px-4">
+
+        <a class="navbar-brand d-flex align-items-center"
+           th:href="@{/menu}">
+
+            <img src="/img/loogo.PNG"
+                 alt="VETSHOP - Dra. Sheila Sánchez"
+                 class="logo-navbar">
+
+            <span class="system-name">
+                Gestión Veterinaria
+            </span>
+
+        </a>
+
+
+        <div class="user-info">
+
+            <i class="bi bi-person-circle"></i>
+
+            <span>Administrador</span>
+
+
+            <a th:href="@{/menu}"
+               class="btn btn-sm btn-vet-outline ms-2">
+
+                <i class="bi bi-house"></i>
+
+                <span>Menú</span>
+
+            </a>
+
+
+            <a th:href="@{/logout}"
+               class="btn btn-sm btn-vet-outline">
+
+                <i class="bi bi-box-arrow-right"></i>
+
+                <span>Salir</span>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     CONTENIDO
+     ===================================================== -->
+
+<main class="main-container">
+
+
+    <!-- =================================================
+         TÍTULO
+         ================================================= -->
+    <div class="mb-4">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+            <!-- TÍTULO -->
+
+            <div>
+
+                <h2 class="page-title mb-1">
+
+                    <i class="bi bi-cash-stack"></i>
+
+                    Caja
+
+                </h2>
+
+                <p class="page-subtitle mb-0">
+
+                    Control de apertura, ventas, pagos y cierre de caja.
+
+                </p>
+
+            </div>
+
+
+            <!-- ESTADO DE CAJA -->
+
+            <div class="estado-caja">
+
+            <span class="estado-caja-indicador"
+                  th:classappend="${cajaAbierta} ? ' caja-abierta' : ' caja-cerrada'">
+
+                <i class="bi"
+                   th:classappend="${cajaAbierta} ? ' bi-check-circle-fill' : ' bi-x-circle-fill'">
+                </i>
+
+                <span th:text="${cajaAbierta} ? 'Caja abierta' : 'Caja cerrada'">
+                    Caja cerrada
+                </span>
+
+            </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+    <!-- =================================================
+         FILTROS
+         ================================================= -->
+
+    <div class="vet-card mb-4">
+
+        <div class="vet-card-body">
+
+            <div class="row g-3 align-items-end">
+
+
+                <!-- FECHA -->
+
+                <div class="col-md-4">
+
+                    <label class="form-label">
+                        Fecha
+                    </label>
+
+                    <input type="date"
+                           class="form-control"
+                           id="fecha"
+                           name="fecha"
+                           th:value="${fecha}">
+
+                </div>
+
+
+
+                <!-- CAJA -->
+
+                <div class="col-md-3">
+
+                    <label class="form-label">
+                        Caja
+                    </label>
+
+                    <select class="form-select"
+                            id="caja"
+                            name="caja">
+
+                        <option value="">
+                            Seleccione
+                        </option>
+
+                        <option th:each="c : ${caja}"
+                                th:value="${c.id}"
+                                th:text="${c.descripcion}">
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- VENDEDOR -->
+
+                <div class="col-md-3">
+
+                    <label class="form-label">
+                        Vendedor
+                    </label>
+
+                    <select class="form-select"
+                            id="vendedor"
+                            name="vendedor">
+
+                        <option value="">
+                            Seleccione
+                        </option>
+
+                        <option th:each="v : ${empleado}"
+                                th:value="${v.id}"
+                                th:text="${v.nombre + ' ' + v.apellido}">
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- BUSCAR -->
+
+                <div class="col-md-2">
+
+                    <button type="button"
+                            class="btn btn-vet w-100">
+
+                        <i class="bi bi-search"></i>
+
+                        Buscar
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 BOTONES
+                 ================================================= -->
+
+            <div class="d-flex flex-wrap gap-2 mt-4">
+
+
+                <!-- ABRIR CAJA -->
+
+                <button type="button"
+                        class="btn btn-vet"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalApertura"
+                        th:disabled="${cajaAbierta}">
+
+                    <i class="bi bi-unlock"></i>
+
+                    Abrir Caja
+
+                </button>
+
+
+
+                <!-- CERRAR CAJA -->
+
+                <button type="button"
+                        class="btn btn-danger"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalCierre"
+                        th:disabled="${!cajaAbierta}">
+
+                    <i class="bi bi-lock"></i>
+
+                    Cerrar Caja
+                </button>
+
+
+
+                <!-- IMPRIMIR -->
+
+                <button type="button"
+                        class="btn btn-vet-outline"
+                        onclick="window.print()">
+
+                    <i class="bi bi-printer"></i>
+
+                    Imprimir
+
+                </button>
+
+                <button type="button"
+                        class="btn btn-vet-outline"
+                        onclick="imprimirCierre()">
+                    <i class="bi bi-printer"></i> Imprimir cierre
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         REGISTROS DE VENTAS
+         ================================================= -->
+
+    <div class="vet-card mb-4">
+
+        <div class="vet-card-header d-flex justify-content-between align-items-center">
+
+            <h5>
+
+                <i class="bi bi-receipt me-2"></i>
+
+                Registros de Ventas
+
+            </h5>
+
+
+            <button type="button"
+                    class="btn btn-sm btn-vet-outline bg-white">
+
+                <i class="bi bi-download"></i>
+
+                Exportar
+
+            </button>
+
+        </div>
+
+
+        <div class="vet-card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover mb-0">
+
+                    <thead>
+
+                    <tr>
+
+                        <th>N° Factura</th>
+
+                        <th>Fecha</th>
+
+                        <th>RUC</th>
+
+                        <th>Razón Social</th>
+
+                        <th>Condición</th>
+
+                        <th>Cant.</th>
+
+                        <th>Concepto Pago</th>
+
+                        <th>Pagado</th>
+
+                        <th>Descuento</th>
+
+                        <th>Saldo Gs.</th>
+
+                        <th>Estado</th>
+
+                        <th>Vendedor</th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                    <tr th:each="venta : ${ventas}">
+
+                        <td th:text="${venta.numeroFactura}">
+                            001-001-0000001
+                        </td>
+
+                        <td th:text="${venta.fecha}">
+                            18/09/2026
+                        </td>
+
+                        <td th:text="${venta.ruc}">
+                            8000000-0
+                        </td>
+
+                        <td th:text="${venta.razonSocial}">
+                            Cliente
+                        </td>
+
+                        <td th:text="${venta.condicion}">
+                            Contado
+                        </td>
+
+                        <td th:text="${venta.cantidad}">
+                            1
+                        </td>
+
+                        <td th:text="${venta.conceptoPago}">
+                            Venta
+                        </td>
+
+                        <td th:text="${venta.pagado}">
+                            Gs. 0
+                        </td>
+
+                        <td th:text="${venta.descuento}">
+                            Gs. 0
+                        </td>
+
+                        <td th:text="${venta.saldo}">
+                            Gs. 0
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-success"
+                                  th:text="${venta.estado}">
+                                Pagado
+                            </span>
+
+                        </td>
+
+                        <td th:text="${venta.vendedor}">
+                            Administrador
+                        </td>
+
+                    </tr>
+
+
+                    <tr th:if="${#lists.isEmpty(ventas)}">
+
+                        <td colspan="12"
+                            class="text-center text-muted py-4">
+
+                            <i class="bi bi-inbox fs-4 d-block mb-2"></i>
+
+                            No se encontraron registros
+
+                        </td>
+
+                    </tr>
+
+
+                    </tbody>
+
+
+                    <tfoot>
+
+                    <tr>
+
+                        <td colspan="7"></td>
+
+                        <td class="text-end fw-bold">
+                            Gs. 0
+                        </td>
+
+                        <td></td>
+
+                        <td class="fw-bold">
+                            Gs. 0
+                        </td>
+
+                        <td colspan="2"></td>
+
+                    </tr>
+
+                    </tfoot>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         RESÚMENES
+         ================================================= -->
+
+    <div class="row g-4">
+
+
+        <!-- =================================================
+             RESUMEN DE CAJA
+             ================================================= -->
+
+        <div class="col-lg-4">
+
+            <div class="vet-card h-100">
+
+                <div class="vet-card-header">
+
+                    <h5>
+
+                        <i class="bi bi-wallet2 me-2"></i>
+
+                        Resumen de Caja
+
+                    </h5>
+
+                </div>
+
+
+                <div class="vet-card-body p-0">
+
+                    <div class="table-responsive">
+
+                        <table class="table mb-0">
+
+                            <thead>
+
+                            <tr>
+
+                                <th>Concepto</th>
+
+                                <th class="text-end">
+                                    Monto
+                                </th>
+
+                            </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                            <tr>
+
+                                <td>
+                                    Monto de apertura
+                                </td>
+
+                                <td class="text-end">
+                                    Gs. 0
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>
+                                    Ventas
+                                </td>
+
+                                <td class="text-end">
+                                    Gs. 0
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>
+                                    Compras
+                                </td>
+
+                                <td class="text-end">
+                                    Gs. 0
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>
+                                    Gastos
+                                </td>
+
+                                <td class="text-end">
+                                    Gs. 0
+                                </td>
+
+                            </tr>
+
+                            </tbody>
+
+
+                            <tfoot>
+
+                            <tr class="fw-bold">
+
+                                <td>
+                                    TOTAL
+                                </td>
+
+                                <td class="text-end price">
+                                    Gs. 0
+                                </td>
+
+                            </tr>
+
+                            </tfoot>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             RESUMEN DE PAGOS
+             ================================================= -->
+
+        <div class="col-lg-4">
+
+            <div class="vet-card h-100">
+
+                <div class="vet-card-header">
+
+                    <h5>
+
+                        <i class="bi bi-credit-card me-2"></i>
+
+                        Resumen de Pagos
+
+                    </h5>
+
+                </div>
+
+
+                <div class="vet-card-body p-0">
+
+                    <div class="table-responsive">
+
+                        <table class="table mb-0">
+
+                            <thead>
+
+                            <tr>
+
+                                <th>Concepto</th>
+
+                                <th class="text-end">
+                                    Monto
+                                </th>
+
+                            </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                            <tr th:each="pago : ${pagos}">
+
+                                <td th:text="${pago.concepto}">
+                                    Efectivo
+                                </td>
+
+                                <td class="text-end"
+                                    th:text="${pago.monto}">
+                                    Gs. 0
+                                </td>
+
+                            </tr>
+
+
+                            <tr th:if="${#lists.isEmpty(pagos)}">
+
+                                <td colspan="2"
+                                    class="text-center text-muted">
+
+                                    No se encontraron registros
+
+                                </td>
+
+                            </tr>
+
+                            </tbody>
+
+
+                            <tfoot>
+
+                            <tr class="fw-bold">
+
+                                <td>
+                                    TOTAL
+                                </td>
+
+                                <td class="text-end price">
+                                    Gs. 0
+                                </td>
+
+                            </tr>
+
+                            </tfoot>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             CIERRE DE CAJA
+             ================================================= -->
+
+        <div class="col-lg-4">
+
+            <div class="vet-card h-100">
+
+                <div class="vet-card-header">
+
+                    <h5>
+
+                        <i class="bi bi-cash-stack me-2"></i>
+
+                        Cierre de Caja
+
+                    </h5>
+
+                </div>
+
+
+                <div class="vet-card-body p-0">
+
+                    <div class="table-responsive">
+
+                        <table class="table mb-0">
+
+                            <thead>
+
+                            <tr>
+
+                                <th class="text-end">
+                                    Moneda
+                                </th>
+
+                                <th class="text-center">
+                                    Cantidad
+                                </th>
+
+                                <th class="text-end">
+                                    Total
+                                </th>
+
+                            </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                            <tr>
+                                <td class="text-end">100.000</td>
+                                <td class="text-center">-</td>
+                                <td class="text-end">-</td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-end">50.000</td>
+                                <td class="text-center">-</td>
+                                <td class="text-end">-</td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-end">20.000</td>
+                                <td class="text-center">-</td>
+                                <td class="text-end">-</td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-end">10.000</td>
+                                <td class="text-center">-</td>
+                                <td class="text-end">-</td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-end">5.000</td>
+                                <td class="text-center">-</td>
+                                <td class="text-end">-</td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-end">2.000</td>
+                                <td class="text-center">-</td>
+                                <td class="text-end">-</td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-end">1.000</td>
+                                <td class="text-center">-</td>
+                                <td class="text-end">-</td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-end">500</td>
+                                <td class="text-center">-</td>
+                                <td class="text-end">-</td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-end">100</td>
+                                <td class="text-center">-</td>
+                                <td class="text-end">-</td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-end">50</td>
+                                <td class="text-center">-</td>
+                                <td class="text-end">-</td>
+                            </tr>
+
+                            </tbody>
+
+
+                            <tfoot>
+
+                            <tr class="fw-bold">
+
+                                <td></td>
+
+                                <td class="text-center">
+                                    TOTAL
+                                </td>
+
+                                <td class="text-end price">
+                                    Gs. 0
+                                </td>
+
+                            </tr>
+
+                            </tfoot>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- =====================================================
+     MODAL APERTURA DE CAJA
+     ===================================================== -->
+
+<div class="modal fade caja-modal"
+     id="modalApertura"
+     tabindex="-1"
+     aria-labelledby="modalAperturaLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+
+        <div class="modal-content">
+
+            <form th:action="@{/caja}"
+                  th:object="${aperturaCaja}"
+                  method="post">
+
+                <!-- HEADER -->
+                <div class="modal-header">
+
+                    <h5 class="modal-title"
+                        id="modalAperturaLabel">
+
+                        <i class="bi bi-unlock-fill"></i>
+                        Apertura de Caja
+
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close btn-close-white"
+                            data-bs-dismiss="modal"
+                            aria-label="Cerrar">
+                    </button>
+
+                </div>
+
+
+                <!-- BODY -->
+                <div class="modal-body">
+
+                    <div class="apertura-info mb-3">
+
+                        <i class="bi bi-info-circle"></i>
+
+                        Ingrese el monto disponible y la cotización
+                        para iniciar la jornada de caja.
+
+                    </div>
+
+
+                    <!-- FILA 1 -->
+                    <div class="row g-3">
+
+                        <!-- CAJA -->
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Caja
+                            </label>
+
+                            <select class="form-select"
+                                    th:field="*{caja.id}"
+                                    required>
+
+                                <option value="">
+                                    Seleccione
+                                </option>
+
+                                <option th:each="c : ${caja}"
+                                        th:value="${c.id}"
+                                        th:text="${c.descripcion}">
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- VENDEDOR -->
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Vendedor
+                            </label>
+
+                            <select class="form-select"
+                                    th:field="*{empleado.id}"
+                                    required>
+
+                                <option value="">
+                                    Seleccione
+                                </option>
+
+                                <option th:each="v : ${empleado}"
+                                        th:value="${v.id}"
+                                        th:text="${v.nombre + ' ' + v.apellido}">
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- FILA 2 -->
+                    <div class="row g-3 mt-1">
+
+                        <!-- FECHA -->
+                        <div class="col-md-4">
+
+                            <label class="form-label">
+                                Fecha de apertura
+                            </label>
+
+                            <input type="date"
+                                   class="form-control"
+                                   th:field="*{fecha}"
+                                   required>
+
+                        </div>
+
+
+                        <!-- MONTO -->
+                        <div class="col-md-4">
+
+                            <label class="form-label">
+                                Monto de apertura
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    Gs.
+                                </span>
+
+                                <input type="number"
+                                       class="form-control"
+                                       th:field="*{monto_apertura}"
+                                       min="0"
+                                       step="1"
+                                       placeholder="Ingrese el monto"
+                                       required>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- COTIZACIÓN -->
+                        <div class="col-md-4">
+
+                            <label class="form-label">
+                                Cotización
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    ₲
+                                </span>
+
+                                <input type="number"
+                                       class="form-control"
+                                       th:field="*{cotizacion}"
+                                       min="0"
+                                       step="0.01"
+                                       placeholder="Ej. 7.500"
+                                       required>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- OBSERVACIÓN -->
+                    <div class="mt-3">
+
+                        <label class="observacion-label">
+                            Observación
+                        </label>
+
+                        <textarea class="form-control observacion"
+                                  th:field="*{observacion}"
+                                  rows="2"
+                                  placeholder="Observación opcional">
+                        </textarea>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FOOTER -->
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-caja-secondary"
+                            data-bs-dismiss="modal">
+
+                        <i class="bi bi-x-lg me-1"></i>
+                        Cancelar
+
+                    </button>
+
+
+                    <button type="submit"
+                            class="btn btn-caja-primary">
+
+                        <i class="bi bi-unlock-fill me-1"></i>
+                        Abrir Caja
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+</div>
+
+<!-- =====================================================
+     MODAL CIERRE DE CAJA
+     ===================================================== -->
+
+<div class="modal fade caja-modal"
+     id="modalCierre"
+     tabindex="-1"
+     aria-labelledby="modalCierreLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-cierre-compacto">
+
+        <div class="modal-content">
+
+            <form th:action="@{/caja/cerrar}"
+                  method="post">
+
+                <!-- HEADER -->
+                <div class="modal-header">
+
+                    <h5 class="modal-title" id="modalCierreLabel">
+                        <i class="bi bi-lock-fill me-2"></i>
+                        Cierre de Caja
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close btn-close-white"
+                            data-bs-dismiss="modal"
+                            aria-label="Cerrar">
+                    </button>
+
+                </div>
+
+
+                <!-- BODY -->
+                <div class="modal-body">
+
+                    <!-- =================================================
+                         MEDIOS DE PAGO
+                         ================================================= -->
+
+                    <div class="row g-2 mb-3">
+
+                        <!-- EFECTIVO -->
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                <i class="bi bi-cash-stack me-1"></i>
+                                Total efectivo
+                            </label>
+
+                            <input type="number"
+                                   class="form-control"
+                                   id="totalEfectivo"
+                                   name="total_efectivo"
+                                   value="0"
+                                   min="0"
+                                   step="1"
+                                   readonly>
+
+                        </div>
+
+
+                        <!-- TARJETA -->
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                <i class="bi bi-credit-card me-1"></i>
+                                Total tarjeta
+                            </label>
+
+                            <input type="number"
+                                   class="form-control"
+                                   id="totalTarjeta"
+                                   name="total_tarjeta"
+                                   value="0"
+                                   min="0"
+                                   step="1">
+
+                        </div>
+
+
+                        <!-- CHEQUE -->
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                <i class="bi bi-receipt me-1"></i>
+                                Total cheque
+                            </label>
+
+                            <input type="number"
+                                   class="form-control"
+                                   id="totalCheque"
+                                   name="total_cheque"
+                                   value="0"
+                                   min="0"
+                                   step="1">
+
+                        </div>
+
+
+                        <!-- TRANSFERENCIA -->
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                <i class="bi bi-bank me-1"></i>
+                                Total transferencia
+                            </label>
+
+                            <input type="number"
+                                   class="form-control"
+                                   id="totalTransferencia"
+                                   name="total_tranferencia"
+                                   value="0"
+                                   min="0"
+                                   step="1">
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         TOTAL EFECTIVO
+                         ================================================= -->
+
+                    <div class="cierre-total">
+
+                        <span class="cierre-total-label">
+                            <i class="bi bi-calculator me-1"></i>
+                            Total efectivo contado
+                        </span>
+
+                        <span class="cierre-total-value"
+                              id="totalCierre">
+                            Gs. 0
+                        </span>
+
+                    </div>
+
+
+                    <!-- Campo oculto que se envía al backend -->
+                    <input type="hidden"
+                           id="totalEfectivoHidden"
+                           name="total_efectivo"
+                           value="0">
+
+
+                    <!-- =================================================
+                         TOTAL SISTEMA
+                         ================================================= -->
+
+                    <div class="row mt-3">
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Total según sistema
+                            </label>
+
+                            <input type="number"
+                                   class="form-control"
+                                   id="totalSistema"
+                                   name="total_sistema"
+                                   value="0"
+                                   readonly>
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Diferencia
+                            </label>
+
+                            <input type="number"
+                                   class="form-control"
+                                   id="diferencia"
+                                   name="diferencia"
+                                   value="0"
+                                   readonly>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         OBSERVACIÓN
+                         ================================================= -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Efectivo esperado en caja
+                        </label>
+
+                        <input type="number"
+                               class="form-control"
+                               id="efectivoEsperado"
+                               value="0"
+                               readonly>
+
+                    </div>
+
+                    <div class="mt-3">
+
+                        <label class="form-label">
+                            Observación
+                        </label>
+
+                        <textarea class="form-control observacion"
+                                  id="observacionCierre"
+                                  name="observacion"
+                                  placeholder="Ingrese una observación sobre el cierre, si corresponde..."></textarea>
+
+                    </div>
+
+                </div>
+                <div id="comprobanteCierre">
+                    <h2>VETSHOP</h2>
+                    <h3>Comprobante de cierre de caja</h3>
+
+                    <p>Total efectivo: <span id="totalEfectivoImpresion"></span></p>
+                    <p>Total tarjeta: <span id="totalTarjetaImpresion"></span></p>
+                    <p>Total cheque: <span id="totalChequeImpresion"></span></p>
+                    <p>Total transferencia: <span id="totalTransferenciaImpresion"></span></p>
+                    <p>Total según sistema: <span id="totalSistemaImpresion"></span></p>
+                    <p>Efectivo esperado: <span id="efectivoEsperadoImpresion"></span></p>
+                    <p>Efectivo contado: <span id="efectivoContadoImpresion"></span></p>
+                    <p>Diferencia: <span id="diferenciaImpresion"></span></p>
+                </div>
+                <style>
+                    @media print {
+                        body * {
+                            visibility: hidden;
+                        }
+
+                        #comprobanteCierre,
+                        #comprobanteCierre * {
+                            visibility: visible;
+                        }
+
+                        #comprobanteCierre {
+                            position: absolute;
+                            left: 0;
+                            top: 0;
+                            width: 100%;
+                            padding: 20px;
+                            color: #000;
+                            background: #fff;
+                        }
+                    }
+                </style>
+               <script>
+                   function imprimirCierre() {
+                window.print();
+                }
+               </script>
+
+                <!-- FOOTER -->
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-caja-secondary"
+                            data-bs-dismiss="modal">
+
+                        <i class="bi bi-x-lg me-1"></i>
+                        Cancelar
+
+                    </button>
+
+
+                    <button type="submit"
+                            class="btn btn-caja-primary">
+
+                        <i class="bi bi-lock-fill me-1"></i>
+                        Confirmar Cierre
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer>
+
+    <strong>VETSHOP</strong>
+    · Gestión Veterinaria © 2026
+
+</footer>
+
+<style>
+    /* =====================================================
+   MODAL CIERRE COMPACTO
+   ===================================================== */
+
+#modalCierre .modal-dialog {
+    max-width: 700px;
+    margin: 0.5rem auto;
+}
+
+#modalCierre .modal-content {
+    max-height: 96vh;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+#modalCierre .modal-header {
+    padding: 0.65rem 0.95rem;
+}
+
+#modalCierre .modal-title {
+    font-size: 0.9rem;
+}
+
+#modalCierre .modal-body {
+    padding: 0.45rem 0.75rem;
+    overflow-y: auto;
+}
+
+
+/* MEDIOS DE PAGO */
+
+#modalCierre .form-label {
+    font-size: 0.72rem;
+    margin-bottom: 0.1rem;
+}
+
+#modalCierre .form-control {
+    height: 28px;
+    min-height: 28px;
+    padding: 0.15rem 0.4rem;
+    font-size: 0.78rem;
+}
+
+
+#modalCierre .cierre-section-title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin: 0.25rem 0;
+}
+
+
+
+/* TOTAL EFECTIVO */
+
+#modalCierre .cierre-total {
+    padding: 0.3rem 0.5rem;
+    margin: 0.25rem 0;
+    font-size: 0.78rem;
+}
+
+#modalCierre .cierre-total-value {
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+
+/* OBSERVACIÓN */
+
+#modalCierre .observacion {
+    height: 35px;
+    min-height: 35px;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.72rem;
+}
+
+#modalCierre textarea {
+    margin-bottom: 0;
+}
+
+
+/* FOOTER */
+
+#modalCierre .modal-footer {
+    padding: 0.35rem 0.75rem;
+}
+
+#modalCierre .modal-footer .btn {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.72rem;
+}
+</style>
+
+<!-- =====================================================
+     BOOTSTRAP JS
+     ===================================================== -->
+
+<script>
+
+    const modalCierre = document.getElementById('modalCierre');
+
+    modalCierre.addEventListener('show.bs.modal', function () {
+
+        cargarResumenCierre();
+
+    });
+
+
+function cargarResumenCierre() {
+
+    fetch('/caja/resumen-cierre')
+        .then(response => {
+
+            console.log("Estado:", response.status);
+
+            if (!response.ok) {
+                throw new Error(
+                    "Error HTTP: " + response.status
+                );
+            }
+
+            return response.json();
+        })
+        .then(data => {
+
+            console.log("Resumen recibido:", data);
+
+            document.getElementById('totalEfectivo').value =
+                data.totalEfectivo;
+
+            document.getElementById('totalTarjeta').value =
+                data.totalTarjeta;
+
+            document.getElementById('totalCheque').value =
+                data.totalCheque;
+
+            document.getElementById('totalTransferencia').value =
+                data.totalTransferencia;
+
+            document.getElementById('totalSistema').value =
+                data.totalSistema;
+
+            document.getElementById('efectivoEsperado').value =
+                data.efectivoEsperado;
+
+            calcularDiferencia();
+
+        })
+        .catch(error => {
+
+            console.error(
+                "ERROR AL CARGAR RESUMEN:",
+                error
+            );
+
+        });
+}
+
+    function calcularDiferencia() {
+
+    const esperado =
+        parseFloat(
+            document.getElementById('efectivoEsperado').value
+        ) || 0;
+
+    const contado =
+        parseFloat(
+            document.getElementById('efectivoContado').value
+        ) || 0;
+
+    const diferencia = contado - esperado;
+
+    document.getElementById('diferencia').value =
+        diferencia;
+}
+</script>
+<script>
+    function imprimirCierre() {
+        window.print();
+    }
+</script>
+<script th:src="@{/js/caja.js}" defer></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+
+
+</body>
+
+</html>

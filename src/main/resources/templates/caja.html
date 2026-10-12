@@ -1163,7 +1163,7 @@
                             <input type="number"
                                    class="form-control"
                                    id="totalEfectivo"
-                                   name="total_efectivo"
+                                   name="totalEfectivo"
                                    value="0"
                                    min="0"
                                    step="1"
@@ -1183,7 +1183,7 @@
                             <input type="number"
                                    class="form-control"
                                    id="totalTarjeta"
-                                   name="total_tarjeta"
+                                   name="totalTarjeta"
                                    value="0"
                                    min="0"
                                    step="1">
@@ -1202,7 +1202,7 @@
                             <input type="number"
                                    class="form-control"
                                    id="totalCheque"
-                                   name="total_cheque"
+                                   name="totalCheque"
                                    value="0"
                                    min="0"
                                    step="1">
@@ -1221,7 +1221,7 @@
                             <input type="number"
                                    class="form-control"
                                    id="totalTransferencia"
-                                   name="total_tranferencia"
+                                   name="totalTransferencia"
                                    value="0"
                                    min="0"
                                    step="1">
@@ -1253,7 +1253,6 @@
                     <!-- Campo oculto que se envía al backend -->
                     <input type="hidden"
                            id="totalEfectivoHidden"
-                           name="total_efectivo"
                            value="0">
 
 
@@ -1272,7 +1271,7 @@
                             <input type="number"
                                    class="form-control"
                                    id="totalSistema"
-                                   name="total_sistema"
+                                   name="totalSistema"
                                    value="0"
                                    readonly>
 
@@ -1310,6 +1309,7 @@
                         <input type="number"
                                class="form-control"
                                id="efectivoEsperado"
+                               name="efectivoEsperado"
                                value="0"
                                readonly>
 
@@ -1329,19 +1329,7 @@
                     </div>
 
                 </div>
-                <div id="comprobanteCierre">
-                    <h2>VETSHOP</h2>
-                    <h3>Comprobante de cierre de caja</h3>
 
-                    <p>Total efectivo: <span id="totalEfectivoImpresion"></span></p>
-                    <p>Total tarjeta: <span id="totalTarjetaImpresion"></span></p>
-                    <p>Total cheque: <span id="totalChequeImpresion"></span></p>
-                    <p>Total transferencia: <span id="totalTransferenciaImpresion"></span></p>
-                    <p>Total según sistema: <span id="totalSistemaImpresion"></span></p>
-                    <p>Efectivo esperado: <span id="efectivoEsperadoImpresion"></span></p>
-                    <p>Efectivo contado: <span id="efectivoContadoImpresion"></span></p>
-                    <p>Diferencia: <span id="diferenciaImpresion"></span></p>
-                </div>
                 <style>
                     @media print {
                         body * {

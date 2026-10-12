@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 
 @Entity
 @Table(name = "cierre_caja")
@@ -17,7 +19,7 @@ public class Cierre_caja {
     @JoinColumn(name = "id_aperturaCaja")
     private apertura_caja aperturaCaja;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_empleado")
     private empleado empleadoo;
 
@@ -195,8 +197,10 @@ public class Cierre_caja {
     }
 
     public void setEmpleado(empleado empleado) {
+        this.empleadoo = empleado;
     }
 
     public void setEfectivo_esperado(double efectivoEsperado) {
+        this.efectivo_sistema = efectivoEsperado;
     }
 }

@@ -68,6 +68,14 @@ public class CajaControlador {
     public String cerrarCaja(
             @ModelAttribute("datos") ResumenCierreCajaDTO datos) {
 
+
+        System.out.println("Efectivo: " + datos.getTotalEfectivo());
+        System.out.println("Tarjeta: " + datos.getTotalTarjeta());
+        System.out.println("Cheque: " + datos.getTotalCheque());
+        System.out.println("Transferencia: " + datos.getTotalTransferencia());
+        System.out.println("Total sistema: " + datos.getTotalSistema());
+        System.out.println("Efectivo esperado: " + datos.getEfectivoEsperado());
+        System.out.println("Efectivo contado: " + datos.getEfectivoContado());
         cierreCajaServicio.cerrarCaja(datos);
 
         return "redirect:/caja";
